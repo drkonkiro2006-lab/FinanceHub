@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-white text-ink;
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-md bg-brand text-white px-4 py-2 font-medium shadow-soft hover:bg-brand-dark hover:shadow-elevate transition;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center rounded-md border border-brand text-brand px-4 py-2 font-medium hover:bg-brand-light transition;
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-md bg-white/10 border border-white/20 shadow-lg;
+  }
+  .section-spacing {
+    @apply py-24 px-6 md:px-12;
+  }
+  .hover-lift {
+    @apply transition hover:-translate-y-1 hover:shadow-xl;
+  }
+  .hover-scale {
+    @apply transition hover:scale-[1.03];
+  }
+  .fade-up {
+    @apply will-change-transform;
+  }
+  .fade-in {
+    @apply will-change-opacity;
+  }
+  .contact-card {
+    @apply flex items-center justify-center gap-2 p-5 rounded-xl bg-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 font-medium;
+  }
+}
