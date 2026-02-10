@@ -1,26 +1,35 @@
+/** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  darkMode: 'class',
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
         brand: {
-          DEFAULT: '#0b5fff',
-          dark: '#0a3fcc',
-          light: '#e6f0ff'
+          DEFAULT: '#2563eb', // blue-600
+          light: '#dbeafe',   // blue-100
+          dark: '#1d4ed8',    // blue-700
         },
         ink: {
-          DEFAULT: '#101828',
-          soft: '#667085'
+          DEFAULT: 'var(--color-ink)',
+          soft: 'var(--color-ink-soft)',
         },
-        success: '#10b981',
-        warning: '#f59e0b',
-        danger: '#ef4444'
+        surface: {
+          DEFAULT: 'var(--color-surface)',
+          elevated: 'var(--color-surface-elevated)',
+        },
+        background: {
+          DEFAULT: 'var(--color-background)',
+        }
       },
       boxShadow: {
-        soft: '0 8px 20px rgba(16,24,40,0.08)',
-        elevate: '0 12px 28px rgba(16,24,40,0.12)'
+        soft: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        elevate: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       }
-    }
+    },
   },
-  plugins: []
+  plugins: [],
 }

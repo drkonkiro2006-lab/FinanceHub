@@ -16,13 +16,13 @@ export default function Layout({ children }) {
   }, [])
 
   return (
-    <div className="min-h-screen">
-      <div className="bg-white">
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-200">
+      <div className="bg-white dark:bg-slate-900 transition-colors duration-200">
         <InfoStrip />
         <AnimatePresence initial={false}>
           <motion.div
             key={stuck ? 'stuck' : 'free'}
-            className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-gray-100"
+            className="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-gray-100 dark:border-slate-800 transition-colors duration-200"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
@@ -104,7 +104,7 @@ export default function Layout({ children }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with us on WhatsApp"
-          className="fixed z-50 md:bottom-6 md:right-6 bottom-5 right-5 w-14 h-14 rounded-full bg-green-500 flex items-center justify-center shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/60"
+          className="fixed z-50 md:bottom-6 md:right-6 bottom-5 right-5 w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/60"
         >
           <div className="w-8 h-8 flex items-center justify-center drop-shadow-[0_0_1.2px_rgba(255,255,255,1)] filter">
             <img src="/src/assets/images/images-removebg-preview.png" alt="WhatsApp" className="w-full h-full object-contain" />

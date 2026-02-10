@@ -40,7 +40,7 @@ const serviceList = [
 
 export default function Home() {
   return (
-    <div className="space-y-20">
+    <div className="space-y-20 bg-white dark:bg-slate-900 transition-colors duration-200">
       <Hero />
       <Stats />
 
@@ -56,7 +56,7 @@ export default function Home() {
             {serviceList.map(s => (
               <motion.div
                 key={s.slug}
-                className="rounded-lg border bg-white shadow-soft hover:shadow-elevate transition"
+                className="rounded-lg border bg-white dark:bg-slate-800 dark:border-slate-700 shadow-soft hover:shadow-elevate transition"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

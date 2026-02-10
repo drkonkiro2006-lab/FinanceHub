@@ -2,9 +2,9 @@ import { Phone, Mail, MapPin, Clock, Linkedin, Twitter, Facebook, Instagram, Sea
 
 export default function InfoStrip() {
   return (
-    <div className="border-b bg-white">
+    <div className="border-b bg-white dark:bg-slate-900 dark:border-slate-800 transition-colors duration-200">
       <div className="container h-10 flex items-center justify-between text-sm">
-        <div className="flex items-center gap-4 text-ink-soft">
+        <div className="flex items-center gap-4 text-ink-soft dark:text-slate-400 transition-colors duration-200">
           <a href="https://www.linkedin.com" aria-label="LinkedIn" className="hover:text-ink">
             <Linkedin size={16} />
           </a>
@@ -21,7 +21,7 @@ export default function InfoStrip() {
             <Search size={16} />
           </button>
         </div>
-        <div className="flex items-center gap-6 text-ink-soft">
+        <div className="flex items-center gap-6 text-ink-soft dark:text-slate-400 transition-colors duration-200">
           <div className="flex items-center gap-1">
             <Phone size={16} /> <span>+91-90000 00000</span>
           </div>
