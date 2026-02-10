@@ -33,21 +33,21 @@ export default function About() {
       <section className="w-full">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-lg border p-6">
-              <div className="text-lg font-semibold text-ink">Mission</div>
-              <p className="text-ink-soft mt-2">
+            <div className="rounded-lg border dark:border-slate-700 p-6 transition-colors duration-200">
+              <div className="text-lg font-semibold text-ink dark:text-white">Mission</div>
+              <p className="text-ink-soft dark:text-slate-300 mt-2 transition-colors duration-200">
                 Deliver clarity, compliance, and confidence through meticulous finance services.
               </p>
             </div>
-            <div className="rounded-lg border p-6">
-              <div className="text-lg font-semibold text-ink">Vision</div>
-              <p className="text-ink-soft mt-2">
-                Become India’s most trusted partner for tax and financial advisory.
+            <div className="rounded-lg border dark:border-slate-700 p-6 transition-colors duration-200">
+              <div className="text-lg font-semibold text-ink dark:text-white">Vision</div>
+              <p className="text-ink-soft dark:text-slate-300 mt-2 transition-colors duration-200">
+                Become India's most trusted partner for tax and financial advisory.
               </p>
             </div>
-            <div className="rounded-lg border p-6">
-              <div className="text-lg font-semibold text-ink">Values</div>
-              <p className="text-ink-soft mt-2">
+            <div className="rounded-lg border dark:border-slate-700 p-6 transition-colors duration-200">
+              <div className="text-lg font-semibold text-ink dark:text-white">Values</div>
+              <p className="text-ink-soft dark:text-slate-300 mt-2 transition-colors duration-200">
                 Integrity, precision, client-centricity, and continuous improvement.
               </p>
             </div>
@@ -58,22 +58,22 @@ export default function About() {
       <section className="w-full">
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-lg border p-6 flex gap-4 items-center">
+            <div className="rounded-lg border dark:border-slate-700 p-6 flex gap-4 items-center transition-colors duration-200">
               <div className="h-20 w-20 rounded-full bg-brand" />
               <div>
-                <div className="text-lg font-semibold text-ink">Founder</div>
-                <div className="text-ink-soft">FCA, MBA Finance</div>
-                <p className="text-ink-soft mt-1">
+                <div className="text-lg font-semibold text-ink dark:text-white transition-colors duration-200">Founder</div>
+                <div className="text-ink-soft dark:text-slate-300 transition-colors duration-200">FCA, MBA Finance</div>
+                <p className="text-ink-soft dark:text-slate-300 mt-1 transition-colors duration-200">
                   12+ years in taxation and compliance. Led transformations for SMEs and corporates.
                 </p>
               </div>
             </div>
-            <div className="rounded-lg border p-6 flex gap-4 items-center">
+            <div className="rounded-lg border dark:border-slate-700 p-6 flex gap-4 items-center transition-colors duration-200">
               <div className="h-20 w-20 rounded-full bg-brand" />
               <div>
-                <div className="text-lg font-semibold text-ink">Developer</div>
-                <div className="text-ink-soft">Senior UI/UX Engineer</div>
-                <p className="text-ink-soft mt-1">
+                <div className="text-lg font-semibold text-ink dark:text-white transition-colors duration-200">Developer</div>
+                <div className="text-ink-soft dark:text-slate-300 transition-colors duration-200">Senior UI/UX Engineer</div>
+                <p className="text-ink-soft dark:text-slate-300 mt-1 transition-colors duration-200">
                   Builds premium-grade SaaS experiences with performance and trust at the core.
                 </p>
               </div>

@@ -55,8 +55,8 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h1 className="text-3xl font-bold text-ink">Contact</h1>
-              <p className="text-ink-soft mt-2">
+              <h1 className="text-3xl font-bold text-ink dark:text-white transition-colors duration-200">Contact</h1>
+              <p className="text-ink-soft dark:text-slate-300 mt-2 transition-colors duration-200">
                 Kolkata, West Bengal, India • +91-90000 00000 • support@finfirm.in
               </p>
               <div className="mt-6 rounded-lg overflow-hidden border">
@@ -124,7 +124,7 @@ export default function Contact() {
             </div>
             <motion.form
               onSubmit={submit}
-              className="rounded-lg border bg-white p-6 shadow-soft"
+              className="rounded-lg border bg-white dark:bg-slate-800 dark:border-slate-700 p-6 shadow-soft transition-colors duration-200"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
@@ -196,7 +196,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
-      <section className="w-full bg-slate-100">
+      <section className="w-full bg-slate-100 dark:bg-slate-900 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-6 py-20">
           <div className="w-full h-[420px] rounded-xl overflow-hidden shadow-lg">
             <iframe

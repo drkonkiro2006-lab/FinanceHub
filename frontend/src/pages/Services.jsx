@@ -59,22 +59,22 @@ const services = [
 
 export default function Services() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-ink">Services</h1>
-      <p className="text-ink-soft mt-2">
+    <div className="transition-colors duration-200">
+      <h1 className="text-3xl font-bold text-ink dark:text-white">Services</h1>
+      <p className="text-ink-soft dark:text-slate-300 mt-2">
         Comprehensive offerings tailored for compliance, efficiency, and growth.
       </p>
       <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map(s => (
-          <div key={s.slug} className="rounded-lg border bg-white shadow-soft hover:shadow-elevate transition">
+          <div key={s.slug} className="rounded-lg border bg-white dark:bg-slate-800 dark:border-slate-700 shadow-soft hover:shadow-elevate transition">
             <img src={s.image} alt={s.title} className="w-full h-40 object-cover object-center rounded-t-lg" />
             <div className="p-4">
-              <div className="text-lg font-semibold text-ink">{s.title}</div>
-              <p className="text-ink-soft mt-1">{s.desc}</p>
-              <ul className="mt-3 text-sm text-ink-soft list-disc pl-5">
+              <div className="text-lg font-semibold text-ink dark:text-white">{s.title}</div>
+              <p className="text-ink-soft dark:text-slate-300 mt-1">{s.desc}</p>
+              <ul className="mt-3 text-sm text-ink-soft dark:text-slate-300 list-disc pl-5">
                 {s.features.map(f => <li key={f}>{f}</li>)}
               </ul>
-              <div className="mt-3 font-semibold text-ink">{s.price}</div>
+              <div className="mt-3 font-semibold text-ink dark:text-white">{s.price}</div>
               <div className="mt-4 flex items-center justify-between">
                 <Link to={`/services/${s.slug}`} className="text-brand">Learn More →</Link>
                 <Link to="/contact" className="btn-outline">Request Service</Link>

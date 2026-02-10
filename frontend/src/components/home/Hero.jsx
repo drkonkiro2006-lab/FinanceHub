@@ -13,7 +13,7 @@ export default function Hero() {
           animate={{ opacity: 0.2 }}
           style={{
             backgroundImage:
-              'linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)',
+              'linear-gradient(to right, rgba(194, 15, 15, 0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)',
             backgroundSize: '24px 24px'
           }}
         />
