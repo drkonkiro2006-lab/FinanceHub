@@ -18,19 +18,26 @@ import taxPlanningBg from '../assets/images/services/tax-planning.png'
 
 const serviceList = [
   {
+      slug: 'Tax-Calculation',
+      title: 'Income Tax Calculator',
+      bg: itrBg,
+      desc: 'Calculate your tax with free of cost',
+      price: '₹0'
+    },
+  {
     slug: 'itr-filing',
     title: 'Income Tax Return Filing',
     desc: 'Accurate, compliant ITR filing with expert guidance.',
     price: '₹1,499',
     bg: itrBg
   },
-  {
-    slug: 'gst-registration',
-    title: 'GST Registration',
-    desc: 'Fast, error-free GST registration with documentation.',
-    price: '₹2,999',
-    bg: gstRegBg
-  },
+  // {
+  //   slug: 'gst-registration',
+  //   title: 'GST Registration',
+  //   desc: 'Fast, error-free GST registration with documentation.',
+  //   price: '₹2,999',
+  //   bg: gstRegBg
+  // },
   {
     slug: 'gst-returns',
     title: 'GST Returns',
