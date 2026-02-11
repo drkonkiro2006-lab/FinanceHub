@@ -8,6 +8,14 @@ import consultingImg from '../assets/images/service-business-consulting.jpg'
 
 const services = [
   {
+    slug: 'Tax-Calculation',
+    title: 'Income Tax Calculator',
+    image: itrImg,
+    desc: 'Calculate your tax with free of cost',
+    features: ['Form selection', 'Document review', 'Deduction mapping', 'E-verification'],
+    price: '₹0'
+  },
+  {
     slug: 'itr-filing',
     title: 'Income Tax Return Filing',
     image: itrImg,

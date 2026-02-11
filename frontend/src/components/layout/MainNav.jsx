@@ -6,6 +6,7 @@ import { useTheme } from '../../context/ThemeContext.jsx'
 import logo from '../../../src/assets/images/mybrand 2.png'
 
 const services = [
+  { slug: 'Tax-Calculation', name: 'Tax Calculation' },
   { slug: 'itr-filing', name: 'ITR Filing' },
   { slug: 'gst-registration', name: 'GST Registration' },
   { slug: 'gst-returns', name: 'GST Returns' },
