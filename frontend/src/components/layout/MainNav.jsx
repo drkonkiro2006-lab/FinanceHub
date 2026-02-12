@@ -23,7 +23,7 @@ export default function MainNav() {
     <div
       className="h-20 flex items-center justify-between px-8 shadow-md"
       style={{
-        background: 'linear-gradient(90deg, rgba(39, 26, 87, 0.85), rgba(221, 183, 100, 0.73))'
+        background: 'linear-gradient(90deg, rgba(42, 73, 247, 0.53), rgba(221, 183, 100, 0.73))'
       }}
     >
       <Link to="/" className="flex items-center">
