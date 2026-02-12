@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+
 /* CSS Variables for Light/Dark Mode */
 :root {
   /* Core text */
@@ -198,6 +209,94 @@
   .dark .badge-light {
     @apply bg-slate-700 text-brand-light;
   }
+  /* Light mode (default) */
+  .info-strip {
+    width: 100%;
+    background-color: #ffffff;
+    color: #1e3a8a;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Dark mode override */
+  .dark .info-strip {
+    background-color: #0b132b;
+    color: #ffffff;
+  }
+
+  .info-strip-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .info-strip-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .social-icons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .contact-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Icons & text - light mode */
+  .social-icons a,
+  .social-icons button,
+  .contact-info {
+    color: #1e40af;
+    transition: color 0.2s ease;
+  }
+
+  /* Icons & text - dark mode */
+  .dark .social-icons a,
+  .dark .social-icons button,
+  .dark .contact-info {
+    color: #cbd5e1;
+  }
+
+  /* Hover enhancement */
+  .social-icons a:hover,
+  .social-icons button:hover {
+    color: #2563eb;
+  }
+
+  .contact-item-md {
+    display: none;
+  }
+
+  .contact-item-lg {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .contact-item-md {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .contact-item-lg {
+      display: flex;
+    }
+  }
 }
 
 @layer utilities {
@@ -209,4 +308,16 @@
   .theme-transition-surface {
     transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
   }
+
+  .pt-safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .pb-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
+
+
+
+

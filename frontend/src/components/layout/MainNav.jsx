@@ -20,8 +20,8 @@ export default function MainNav() {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <div
-      className="h-20 flex items-center justify-between px-8 shadow-md"
+    <nav
+      className="hidden lg:flex h-20 items-center justify-between px-8 shadow-md"
       style={{
         background: 'linear-gradient(90deg, rgba(42, 73, 247, 0.53), rgba(221, 183, 100, 0.73))'
       }}
@@ -34,7 +34,7 @@ export default function MainNav() {
         />
       </Link>
 
-      <nav className="flex items-center gap-8">
+      <div className="flex items-center gap-8">
         <NavLink
           to="/"
           className="text-Black font-medium hover:text-[rgb(29,56,132)] hover:bg-white px-3 py-2 rounded-md transition"
@@ -105,7 +105,7 @@ export default function MainNav() {
         >
           Contact
         </NavLink>
-      </nav>
+      </div>
 
       <div className="flex items-center gap-3">
         <button
@@ -133,6 +133,6 @@ export default function MainNav() {
           Book Consultation
         </Link>
       </div>
-    </div>
+    </nav>
   )
 }

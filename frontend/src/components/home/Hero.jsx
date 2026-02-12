@@ -5,7 +5,7 @@ import { ShieldCheck, BadgeCheck, Lock, Award } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <section className="w-full bg-gradient-to-br from-blue-900 to-slate-900 rounded-none">
+    <section className="w-full max-w-full overflow-hidden bg-gradient-to-br from-blue-900 to-slate-900 rounded-none">
       <div className="relative">
         <motion.div
           className="absolute inset-0 opacity-20"
@@ -60,7 +60,7 @@ export default function Hero() {
           <motion.img
             src={hero}
             alt="Professional finance consulting"
-            className="w-full rounded-xl shadow-elevate object-cover object-center"
+            className="w-full h-auto rounded-xl shadow-elevate object-cover object-center"
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}

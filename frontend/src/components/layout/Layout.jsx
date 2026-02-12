@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
 import InfoStrip from './InfoStrip.jsx'
 import MainNav from './MainNav.jsx'
+import MobileTopBar from './MobileTopBar.jsx'
+import MobileMenu from './MobileMenu.jsx'
+import MobileInfoPanel from './MobileInfoPanel.jsx'
+import MobileBottomCTA from './MobileBottomCTA.jsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Linkedin, Twitter, Facebook, Instagram } from 'lucide-react'
-import logo from "../../../src/assets/images/mybrand.png";
+import logo from '../../../src/assets/images/mybrand.png'
 
 export default function Layout({ children }) {
   const [stuck, setStuck] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [infoOpen, setInfoOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => {
@@ -18,12 +24,26 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-200 flex flex-col">
+      <MobileTopBar
+        onMenu={() => {
+          setInfoOpen(false)
+          setMenuOpen(true)
+        }}
+        onInfo={() => {
+          setMenuOpen(false)
+          setInfoOpen(true)
+        }}
+      />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileInfoPanel open={infoOpen} onClose={() => setInfoOpen(false)} />
+      <MobileBottomCTA />
+
       <div className="bg-white dark:bg-slate-900 transition-colors duration-200">
         <InfoStrip />
         <AnimatePresence initial={false}>
           <motion.div
             key={stuck ? 'stuck' : 'free'}
-            className="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-gray-100 dark:border-slate-800 transition-colors duration-200"
+            className="hidden lg:block sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-gray-100 dark:border-slate-800 transition-colors duration-200"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
@@ -34,24 +54,15 @@ export default function Layout({ children }) {
         </AnimatePresence>
       </div>
 
-      <main className="w-full flex-1">{children}</main>
+      <main className="w-full flex-1 pt-[calc(env(safe-area-inset-top)+3rem)] pb-[calc(env(safe-area-inset-bottom)+5.25rem)] lg:pt-0 lg:pb-0">{children}</main>
 
-      {/* Modern Gradient Footer with Same Text */}
       <footer className="mt-10 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-slate-900 dark:to-black text-gray-900 dark:text-white py-12 px-4 border-t border-gray-200 dark:border-slate-800">
         <div className="container mx-auto grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-
-          {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center">
-            <img
-              src={logo}
-              alt="Brand Logo"
-              className="h-20 w-auto object-contain"
-            />
-          </div>
-            <div className="text-2xl font-bold text-blue-600 dark:text-teal-400">
-              Finance & Tax Services
+              <img src={logo} alt="Brand Logo" className="h-20 w-auto object-contain" />
             </div>
+            <div className="text-2xl font-bold text-blue-600 dark:text-teal-400">Finance & Tax Services</div>
             <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
               Trusted professionals for ITR, GST, advisory, and compliance with enterprise-grade standards.
             </p>
@@ -71,7 +82,6 @@ export default function Layout({ children }) {
             </div>
           </div>
 
-          {/* Services */}
           <div>
             <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">Services</div>
             <ul className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
@@ -84,7 +94,6 @@ export default function Layout({ children }) {
             </ul>
           </div>
 
-          {/* Quick Links */}
           <div>
             <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">Quick Links</div>
             <ul className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
@@ -97,25 +106,23 @@ export default function Layout({ children }) {
             </ul>
           </div>
 
-          {/* Legal & Contact */}
           <div>
             <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">Legal & Contact</div>
             <ul className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
               <li>Kolkata, West Bengal, India</li>
               <li>+91-90000 00000</li>
               <li>support@finfirm.in</li>
-              <li>Monâ€“Sat: 10:00â€“19:00 IST</li>
+              <li>Mon–Sat: 10:00–19:00 IST</li>
               <li>
-                <a href="#" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Terms</a> â€¢{" "}
+                <a href="#" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Terms</a> •{' '}
                 <a href="#" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Privacy</a>
               </li>
             </ul>
           </div>
-
         </div>
 
         <div className="text-center text-gray-500 dark:text-gray-400 text-sm pt-10 mt-10 border-t border-gray-200 dark:border-slate-700">
-          Â© {new Date().getFullYear()} Finance & Tax Services
+          © {new Date().getFullYear()} Finance & Tax Services
         </div>
       </footer>
 
@@ -129,7 +136,7 @@ export default function Layout({ children }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat with us on WhatsApp"
-            className="fixed z-50 md:bottom-6 md:right-6 bottom-5 right-5 w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/60"
+            className="hidden lg:flex fixed z-50 md:bottom-6 md:right-6 bottom-5 right-5 w-14 h-14 rounded-full bg-slate-100 items-center justify-center shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/60"
           >
             <div className="w-8 h-8 flex items-center justify-center drop-shadow-[0_0_1.2px_rgba(255,255,255,1)]">
               <img src="/src/assets/images/images-removebg-preview.png" alt="WhatsApp" className="w-full h-full object-contain" />
