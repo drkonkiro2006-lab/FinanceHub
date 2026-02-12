@@ -79,7 +79,7 @@ export default function ServiceCarousel() {
   };
 
   return (
-    <section className="w-full py-20 bg-[#F8FAFC] dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
+    <section className="w-full py-0 bg-[#F8FAFC] dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
         <div className="max-w-2xl">
           <motion.div
