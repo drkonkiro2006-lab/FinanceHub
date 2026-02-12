@@ -46,7 +46,7 @@ export default function MainNav() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-2 p-1.5 bg-slate-100/50 dark:bg-white/5 backdrop-blur-md rounded-full border border-slate-200 dark:border-white/10 transition-colors">
+        <div className="flex lg:flex items-center gap-2 p-1.5 bg-slate-100/50 dark:bg-white/5 backdrop-blur-md rounded-full border border-slate-200 dark:border-white/10 transition-colors">
           <NavButton to="/" label="Home" />
 
           <div
