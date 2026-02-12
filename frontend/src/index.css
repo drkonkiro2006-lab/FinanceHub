@@ -4,26 +4,59 @@
 
 /* CSS Variables for Light/Dark Mode */
 :root {
-  /* Light mode defaults */
-  --color-ink: #1e293b;
-  --color-ink-soft: #64748b;
+  /* Core text */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-ink: var(--color-text-primary);
+  --color-ink-soft: var(--color-text-secondary);
+
+  /* Surfaces */
+  --color-page-bg: #f8fafc;
   --color-surface: #ffffff;
   --color-surface-elevated: #ffffff;
-  --color-background: #f8fafc;
+  --color-background: var(--color-page-bg);
+
+  /* Reusable card tokens */
+  --color-card-bg: #ffffff;
+  --color-card-bg-hover: #f8fafc;
+  --color-card-border: #dbe3ee;
+  --color-card-border-strong: #cbd5e1;
+
+  /* Icon tokens */
+  --color-icon-bg: #dbeafe;
+  --color-icon-fg: #1d4ed8;
+
+  /* Focus */
+  --color-focus-ring: #2563eb;
 }
 
 /* Dark mode class */
 .dark {
-  --color-ink: #f1f5f9;
-  --color-ink-soft: #94a3b8;
-  --color-surface: #1e293b;
-  --color-surface-elevated: #334155;
-  --color-background: #0f172a;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-ink: var(--color-text-primary);
+  --color-ink-soft: var(--color-text-secondary);
+
+  --color-page-bg: #020617;
+  --color-surface: #0f172a;
+  --color-surface-elevated: #111827;
+  --color-background: var(--color-page-bg);
+
+  --color-card-bg: #111827;
+  --color-card-bg-hover: #1a2538;
+  --color-card-border: #243041;
+  --color-card-border-strong: #334155;
+
+  --color-icon-bg: #1e3a8a;
+  --color-icon-fg: #bfdbfe;
+
+  --color-focus-ring: #60a5fa;
 }
 
 @layer base {
   body {
     @apply text-ink bg-background min-h-screen;
+    transition: background-color 220ms ease, color 220ms ease;
   }
 }
 
@@ -55,19 +88,67 @@
 
   /* Card Styles */
   .card {
-    @apply rounded-xl border bg-surface/70 backdrop-blur shadow-soft transition;
-  }
-  
-  .dark .card {
-    @apply border-slate-700 bg-slate-800/80;
+    @apply rounded-xl border shadow-soft;
+    background-color: var(--color-card-bg);
+    border-color: var(--color-card-border);
+    color: var(--color-text-primary);
+    transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
   }
 
   .card-elevated {
-    @apply rounded-xl border bg-surface/70 backdrop-blur shadow-elevate transition hover:shadow-lg;
+    @apply card shadow-elevate;
   }
-  
-  .dark .card-elevated {
-    @apply border-slate-700 bg-slate-800/80;
+
+  .card-interactive {
+    @apply hover:shadow-elevate;
+  }
+
+  .card-interactive:hover {
+    background-color: var(--color-card-bg-hover);
+    border-color: var(--color-card-border-strong);
+  }
+
+  .card-icon-wrap {
+    @apply h-10 w-10 rounded-full flex items-center justify-center;
+    background-color: var(--color-icon-bg);
+    transition: background-color 220ms ease;
+  }
+
+  .card-icon {
+    color: var(--color-icon-fg);
+    transition: color 220ms ease;
+  }
+
+  .card-chip {
+    @apply border rounded-full;
+    background-color: var(--color-card-bg);
+    border-color: var(--color-card-border);
+    color: var(--color-text-primary);
+    transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease;
+  }
+
+  .card-avatar {
+    @apply border rounded-full;
+    background-color: var(--color-icon-bg);
+    border-color: var(--color-card-border);
+    color: var(--color-icon-fg);
+    transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease;
+  }
+
+  .theme-page {
+    background-color: var(--color-page-bg);
+    transition: background-color 220ms ease;
+  }
+
+  .dot-inactive {
+    background-color: var(--color-card-border-strong);
+    transition: background-color 220ms ease;
+  }
+
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    --tw-ring-color: var(--color-focus-ring);
+    --tw-ring-offset-color: var(--color-page-bg);
   }
 
   /* Input Styles */
@@ -123,5 +204,9 @@
   /* Smooth transition for theme changes */
   .theme-transition {
     @apply transition-colors duration-200;
+  }
+
+  .theme-transition-surface {
+    transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
   }
 }

@@ -32,14 +32,14 @@ export default function HowItWorks() {
             {steps.map((s, i) => (
               <motion.div
                 key={s.title}
-                className="rounded-xl border bg-white/70 backdrop-blur shadow-soft p-4 text-center"
+                className="card card-interactive p-4 text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
               >
-                <div className="mx-auto h-12 w-12 rounded-full bg-brand-light flex items-center justify-center">
-                  <s.icon className="text-brand" size={22} />
+                <div className="mx-auto h-12 w-12 card-icon-wrap">
+                  <s.icon className="card-icon" size={22} />
                 </div>
                 <img src={s.image} alt={s.title} className="mt-3 h-24 w-full object-cover object-center rounded-md" />
                 <div className="mt-3 font-semibold text-ink">{s.title}</div>

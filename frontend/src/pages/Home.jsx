@@ -56,14 +56,14 @@ const serviceList = [
 
 export default function Home() {
   return (
-    <div className="space-y-20 bg-white dark:bg-slate-900 transition-colors duration-200">
+    <div className="space-y-20 bg-background theme-transition-surface">
       <Hero />
       <Stats />
 
       <section className="w-full">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-ink dark:text-white">
+            <h2 className="text-2xl font-semibold text-ink">
               Popular Services
             </h2>
             <Link to="/services" className="text-brand font-medium">
