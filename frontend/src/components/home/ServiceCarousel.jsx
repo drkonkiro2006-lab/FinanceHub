@@ -1,176 +1,165 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 
-// 1. Assets Imports
-// Add an extra ../ to each path
+// Assets Imports
 import itrBg from "../../assets/images/services/itr.png";
 import gstRegBg from "../../assets/images/services/gst-registration.png";
 import gstReturnBg from "../../assets/images/services/gst-returns.png";
 import taxPlanningBg from "../../assets/images/services/tax-planning.png";
-// import accountingImg from "../../assets/images/services/accounting.png";
-// import consultingImg from "../../assets/images/services/consulting.png";
 
-// import itrBg from '../assets/images/services/itr.png'
-// import gstRegBg from '../assets/images/services/gst-registration.png'
-// import gstReturnBg from '../assets/images/services/gst-returns.png'
-// import taxPlanningBg from '../assets/images/services/tax-planning.png'
-
-// 2. Data Array
 const serviceList = [
   {
-    slug: 'Tax-Calculation',
-    title: 'Income Tax Calculator',
+    slug: "Tax-Calculation",
+    title: "Income Tax Calculator",
     bg: itrBg,
-    desc: 'Easily estimate your tax liability with our free, user-friendly tool.',
-    price: '₹0'
+    desc: "Easily estimate your tax liability with our free, user-friendly tool.",
+    price: "Free",
+    tag: "Tool",
   },
   {
-    slug: 'itr-filing',
-    title: 'Income Tax Return Filing',
-    desc: 'Accurate, compliant ITR filing with expert guidance.',
-    price: '₹1,499',
-    bg: itrBg
+    slug: "itr-filing",
+    title: "ITR Filing",
+    desc: "Accurate, compliant ITR filing with expert guidance.",
+    price: "₹1,499",
+    bg: itrBg,
+    tag: "Popular",
   },
   {
-    slug: 'gst-registration',
-    title: 'GST Registration',
-    desc: 'Fast, error-free GST registration with documentation.',
-    price: '₹2,999',
-    bg: gstRegBg
+    slug: "gst-registration",
+    title: "GST Registration",
+    desc: "Fast, error-free GST registration with documentation.",
+    price: "₹2,999",
+    bg: gstRegBg,
+    tag: "Business",
   },
   {
-    slug: 'gst-returns',
-    title: 'GST Returns',
-    desc: 'Monthly/quarterly GST returns filing and reconciliation.',
-    price: '₹1,999',
-    bg: gstReturnBg
+    slug: "gst-returns",
+    title: "GST Returns",
+    desc: "Monthly/quarterly GST returns filing and reconciliation.",
+    price: "₹1,999",
+    bg: gstReturnBg,
+    tag: "Compliance",
   },
   {
-    slug: 'tax-planning',
-    title: 'Tax Planning & Advisory',
-    desc: 'Optimize taxes with proactive advisory and strategy.',
-    price: '₹4,999',
-    bg: taxPlanningBg
-  },
-  {
-    slug: 'accounting-compliance',
-    title: 'Accounting & Compliance',
+    slug: "tax-planning",
+    title: "Tax Planning",
+    desc: "Optimize taxes with proactive advisory and strategy.",
+    price: "₹4,999",
     bg: taxPlanningBg,
-    desc: 'Stay audit-ready with comprehensive bookkeeping and statutory compliance management.',
-    price: '₹3,999'
+    tag: "Strategy",
   },
   {
-    slug: 'business-consulting',
-    title: 'Business & Financial Consulting',
+    slug: "accounting-compliance",
+    title: "Accounting",
     bg: taxPlanningBg,
-    desc: 'Unlock growth potential with data-driven strategies and financial forecasting.',
-    price: '₹7,999'
-  }
+    desc: "Stay audit-ready with comprehensive bookkeeping.",
+    price: "₹3,999",
+    tag: "Audit",
+  },
 ];
 
-// 3. Icons
-const ChevronLeftIcon = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m15 18-6-6 6-6" /></svg>
-);
-const ChevronRightIcon = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 18 6-6-6-6" /></svg>
-);
-
-// 4. Main Component
 export default function ServiceCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const autoplayIntervalRef = useRef(null);
-  const autoplayDelay = 4000;
-
-  const goToNext = () => {
-    setActiveIndex((prev) => (prev + 1) % serviceList.length);
-  };
-
-  const changeSlide = (newIndex) => {
-    const newSafeIndex = (newIndex + serviceList.length) % serviceList.length;
-    setActiveIndex(newSafeIndex);
-  };
+  const autoplayDelay = 5000;
 
   useEffect(() => {
     if (!isPaused) {
-      autoplayIntervalRef.current = setInterval(goToNext, autoplayDelay);
+      const timer = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % serviceList.length);
+      }, autoplayDelay);
+      return () => clearInterval(timer);
     }
-    return () => clearInterval(autoplayIntervalRef.current);
-  }, [isPaused, activeIndex]);
+  }, [isPaused]);
 
-  const onDragEnd = (event, info) => {
-    const dragThreshold = 75;
-    if (info.offset.x > dragThreshold) changeSlide(activeIndex - 1);
-    else if (info.offset.x < -dragThreshold) changeSlide(activeIndex + 1);
+  const changeSlide = (newIndex) => {
+    setActiveIndex((newIndex + serviceList.length) % serviceList.length);
   };
 
   return (
-    <section className="w-full py-12 bg-white dark:bg-black overflow-hidden transition-colors duration-500">
-      <div className="max-w-7xl mx-auto px-6 mb-10 flex justify-between items-end">
-        <div>
-          <h2 className="text-3xl font-bold text-[rgb(29,56,132)] dark:text-[rgb(220,182,101)]">
-            Popular Services
+    <section className="w-full py-20 bg-[#F8FAFC] dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
+        <div className="max-w-2xl">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 mb-4"
+          >
+            <span className="p-1.5 rounded-lg bg-blue-600/10 dark:bg-amber-500/10 text-blue-600 dark:text-amber-500">
+              <Sparkles size={16} />
+            </span>
+            <span className="text-sm font-bold tracking-[0.2em] uppercase text-blue-600 dark:text-amber-500">
+              Premium Solutions
+            </span>
+          </motion.div>
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white">
+            Our{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-amber-200 dark:to-amber-500">
+              Core Expertise
+            </span>
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">Expert solutions for your financial needs</p>
         </div>
-        <Link to="/services" className="text-[rgb(29,56,132)] dark:text-[rgb(220,182,101)] font-medium hover:underline">
-          View all
+
+        <Link
+          to="/services"
+          className="group flex items-center gap-2 text-slate-600 dark:text-slate-400 font-bold hover:text-blue-600 dark:hover:text-amber-500 transition-colors"
+        >
+          View all Services
+          <ArrowRight
+            size={18}
+            className="group-hover:translate-x-1 transition-transform"
+          />
         </Link>
       </div>
 
-      <div 
-        className="relative h-[450px] md:h-[550px] flex items-center justify-center"
+      <div
+        className="relative h-[500px] flex items-center justify-center perspective-[1500px]"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <motion.div 
-          className="relative w-full h-full flex items-center justify-center"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          onDragEnd={onDragEnd}
-        >
+        <div className="relative w-full h-full flex items-center justify-center overflow-visible">
           {serviceList.map((service, index) => (
-            <Card 
-              key={service.slug} 
-              service={service} 
-              index={index} 
-              activeIndex={activeIndex} 
-              totalCards={serviceList.length} 
+            <Card
+              key={service.slug}
+              service={service}
+              index={index}
+              activeIndex={activeIndex}
+              totalCards={serviceList.length}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
 
-      <div className="flex flex-col items-center gap-6 mt-8">
-        <div className="flex items-center gap-4">
-          <button 
+      <div className="flex flex-col items-center gap-8 mt-12">
+        <div className="flex items-center gap-6">
+          <button
             onClick={() => changeSlide(activeIndex - 1)}
-            className="p-3 rounded-full border border-[rgb(29,56,132)] dark:border-[rgb(220,182,101)] text-[rgb(29,56,132)] dark:text-[rgb(220,182,101)] hover:bg-[rgb(29,56,132)] hover:text-white dark:hover:bg-[rgb(220,182,101)] dark:hover:text-black transition-all"
+            className="p-4 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-blue-600 dark:hover:bg-amber-500 hover:text-white dark:hover:text-black transition-all shadow-xl shadow-slate-200/50 dark:shadow-none"
           >
-            <ChevronLeftIcon className="w-6 h-6" />
+            <ChevronLeft size={24} />
           </button>
 
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             {serviceList.map((_, index) => (
               <button
                 key={index}
                 onClick={() => changeSlide(index)}
-                className={`h-2 transition-all duration-300 rounded-full ${
-                  activeIndex === index 
-                  ? "w-8 bg-[rgb(29,56,132)] dark:bg-[rgb(220,182,101)]" 
-                  : "w-2 bg-gray-300 dark:bg-neutral-800"
+                className={`transition-all duration-500 rounded-full ${
+                  activeIndex === index
+                    ? "w-10 bg-blue-600 dark:bg-amber-500 h-2"
+                    : "w-2 bg-slate-300 dark:bg-slate-800 h-2 hover:bg-slate-400"
                 }`}
               />
             ))}
           </div>
 
-          <button 
+          <button
             onClick={() => changeSlide(activeIndex + 1)}
-            className="p-3 rounded-full border border-[rgb(29,56,132)] dark:border-[rgb(220,182,101)] text-[rgb(29,56,132)] dark:text-[rgb(220,182,101)] hover:bg-[rgb(29,56,132)] hover:text-white dark:hover:bg-[rgb(220,182,101)] dark:hover:text-black transition-all"
+            className="p-4 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-blue-600 dark:hover:bg-amber-500 hover:text-white dark:hover:text-black transition-all shadow-xl shadow-slate-200/50 dark:shadow-none"
           >
-            <ChevronRightIcon className="w-6 h-6" />
+            <ChevronRight size={24} />
           </button>
         </div>
       </div>
@@ -178,63 +167,114 @@ export default function ServiceCarousel() {
   );
 }
 
-// 5. Helper Sub-component
 function Card({ service, index, activeIndex, totalCards }) {
   let offset = index - activeIndex;
   if (offset > totalCards / 2) offset -= totalCards;
   if (offset < -totalCards / 2) offset += totalCards;
 
   const isActive = offset === 0;
-  const isVisible = Math.abs(offset) <= 1.5;
+  const isSide = Math.abs(offset) === 1;
+  const isVisible = Math.abs(offset) <= 2;
 
   return (
     <motion.div
-      className="absolute w-[300px] md:w-[400px] h-[400px] md:h-[480px]"
+      className="absolute w-[320px] md:w-[420px] h-[450px]"
       animate={{
-        x: `${offset * 110}%`,
-        scale: isActive ? 1 : 0.85,
-        zIndex: totalCards - Math.abs(offset),
+        x: `${offset * 90}%`,
+        scale: isActive ? 1 : 0.8,
+        zIndex: 10 - Math.abs(offset),
         opacity: isVisible ? 1 : 0,
-        rotateY: offset * 15,
+        rotateY: offset * 25,
+        filter: isActive ? "blur(0px)" : "blur(2px)",
       }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
-      <div className="relative w-full h-full rounded-[2rem] overflow-hidden shadow-2xl border-2 border-transparent dark:border-[rgb(220,182,101)]/20">
-        <img 
-          src={service.bg} 
-          alt={service.title} 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+      <div className="group relative w-full h-full rounded-[2.5rem] p-3 bg-white dark:bg-white/5 border border-white/50 dark:border-white/10 backdrop-blur-xl shadow-2xl overflow-hidden">
+        <div className="relative w-full h-full rounded-[2rem] overflow-hidden">
+          <img
+            src={service.bg}
+            alt={service.title}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
 
-        <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
-          <motion.div
-            initial={false}
-            animate={{ y: isActive ? 0 : 20, opacity: isActive ? 1 : 0 }}
-          >
-            <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
-            <p className="text-sm text-gray-200 line-clamp-2 mb-4">{service.desc}</p>
-            
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-xl font-bold text-[rgb(220,182,101)]">
-                {service.price}
-              </span>
-              <div className="flex gap-3">
-                <Link 
-                  to={`/services/${service.slug}`}
-                  className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md hover:bg-white/20 text-sm transition"
+          <div className="absolute top-6 left-6">
+            <span className="px-3 py-0 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[10px] font-black uppercase tracking-widest text-white">
+              {service.tag}
+            </span>
+          </div>
+
+          <div className="absolute inset-0 p-8 flex flex-col justify-end">
+            <AnimatePresence mode="wait">
+              {(isActive || isSide) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{
+                    opacity: isActive ? 1 : 0.6,
+                    y: 0,
+                  }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
                 >
-                  Details
-                </Link>
-                <Link 
-                  to="/contact"
-                  className="px-4 py-2 rounded-lg bg-[rgb(29,56,132)] dark:bg-[rgb(220,182,101)] text-white dark:text-black font-semibold text-sm transition"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </div>
-          </motion.div>
+                  <h3
+                    className={`text-3xl font-black mb-2 leading-tight transition-all duration-300 ${
+                      isActive ? "text-white" : "text-white/70"
+                    }`}
+                  >
+                    {service.title}
+                  </h3>
+
+                  <p
+                    className={`text-sm line-clamp-2 mb-6 font-medium leading-relaxed transition-all duration-300 ${
+                      isActive ? "text-slate-300" : "text-slate-400"
+                    }`}
+                  >
+                    {service.desc}
+                  </p>
+
+                  <div
+                    className={`flex items-center justify-between border-t pt-6 transition-all duration-300 ${
+                      isActive
+                        ? "border-white/10 opacity-100"
+                        : "border-white/5 opacity-60"
+                    }`}
+                  >
+                    <div>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">
+                        Starting from
+                      </p>
+                      <span
+                        className={`text-2xl font-black ${
+                          isActive
+                            ? "text-white dark:text-amber-400"
+                            : "text-white/70"
+                        }`}
+                      >
+                        {service.price}
+                      </span>
+                    </div>
+
+                    {isActive && (
+                      <div className="flex gap-2">
+                        <Link
+                          to={`/services/${service.slug}`}
+                          className="p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all text-white"
+                        >
+                          <ArrowRight size={20} />
+                        </Link>
+                        <Link
+                          to="/contact"
+                          className="px-6 py-3 rounded-xl bg-blue-600 dark:bg-amber-500 text-white dark:text-black font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg"
+                        >
+                          Start
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </motion.div>
