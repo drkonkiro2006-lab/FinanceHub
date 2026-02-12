@@ -4,7 +4,7 @@ export default function InfoStrip() {
   return (
     <div className="border-b bg-white dark:bg-slate-900 dark:border-slate-800 transition-colors duration-200">
       <div className="container h-10 flex items-center justify-between text-sm">
-        <div className="flex items-center gap-4 text-ink-soft dark:text-slate-400 transition-colors duration-200">
+        <div className="flex items-center px-8 gap-4 text-ink-soft dark:text-slate-400 transition-colors duration-200">
           <a href="https://www.linkedin.com" aria-label="LinkedIn" className="hover:text-ink">
             <Linkedin size={16} />
           </a>
