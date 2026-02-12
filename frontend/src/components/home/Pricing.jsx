@@ -17,7 +17,7 @@ export default function Pricing() {
           {plans.map(plan => (
             <motion.div
               key={plan.name}
-              className={`rounded-xl border bg-white/70 backdrop-blur shadow-soft p-6 hover:scale-[1.02] transition ${plan.popular ? 'ring-2 ring-brand' : ''}`}
+              className={`card card-interactive p-6 hover:scale-[1.02] ${plan.popular ? 'ring-2 ring-brand' : ''}`}
             >
               <div className="flex items-center justify-between">
                 <div className="text-xl font-semibold text-ink">{plan.name}</div>

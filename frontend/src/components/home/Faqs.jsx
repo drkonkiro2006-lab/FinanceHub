@@ -14,14 +14,14 @@ export default function Faqs() {
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-2xl font-semibold text-ink">FAQs</h2>
         <p className="text-ink-soft mt-2">Short, clear answers for quick decisions.</p>
-        <div className="mt-4 rounded-xl border bg-white/70 backdrop-blur shadow-soft divide-y">
+        <div className="mt-4 card divide-y divide-[var(--color-card-border)]">
           {items.map((it, idx) => {
             const isOpen = open === idx
             return (
               <div key={it.q}>
                 <button
                   onClick={() => setOpen(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between px-4 py-3"
+                  className="w-full flex items-center justify-between px-4 py-3 focus-ring"
                 >
                   <span className="font-medium text-ink">{it.q}</span>
                   <ChevronDown className={`text-ink-soft transition ${isOpen ? 'rotate-180' : ''}`} />

@@ -18,7 +18,7 @@ export default function Blogs() {
         <p className="text-ink-soft mt-2">Finance updates and guidance from our team.</p>
         <div className="mt-6 grid md:grid-cols-3 gap-6">
           {blogs.map(b => (
-            <motion.div key={b.id} className="rounded-xl border bg-white/70 backdrop-blur shadow-soft overflow-hidden">
+            <motion.div key={b.id} className="card card-interactive overflow-hidden">
               <div className="relative h-40">
                 <motion.img
                   src={b.image}
@@ -27,11 +27,13 @@ export default function Blogs() {
                   whileHover={{ scale: 1.03 }}
                   transition={{ duration: 0.3 }}
                 />
-                <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-white/90">{b.tag} • {b.time}</span>
+                <span className="absolute top-3 left-3 text-xs px-2 py-1 card-chip">
+                  {b.tag} {'\u2022'} {b.time}
+                </span>
               </div>
               <div className="p-4">
                 <div className="font-semibold text-ink">{b.title}</div>
-                <Link to={`/news/${b.id}`} className="text-brand text-sm mt-2 inline-block">Read →</Link>
+                <Link to={`/news/${b.id}`} className="text-brand text-sm mt-2 inline-block">Read {'\u2192'}</Link>
               </div>
             </motion.div>
           ))}
