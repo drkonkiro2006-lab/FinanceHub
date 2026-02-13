@@ -85,7 +85,7 @@ export default function ServiceCarousel() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 mb-4"
+            className="flex items-center gap-2 mb-4[0]"
           >
             <span className="p-1.5 rounded-lg bg-blue-600/10 dark:bg-amber-500/10 text-blue-600 dark:text-amber-500">
               <Sparkles size={16} />
