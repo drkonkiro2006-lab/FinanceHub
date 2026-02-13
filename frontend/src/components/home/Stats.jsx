@@ -2,18 +2,18 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { motion, useMotionValue, useSpring, useInView, AnimatePresence } from 'framer-motion';
 import { FileText, ArrowUpRight, ShieldCheck, Clock } from 'lucide-react';
 
-// --- DATA remains the same ---
 const stats = [
-  { label: "Returns Filed", value: 829, suffix: "+", icon: FileText, delay: 0.1 },
-  { label: "Managed", value: 15, prefix: "₹", suffix: "cr+", icon: ArrowUpRight, delay: 0.2 },
-  { label: "Accuracy", value: 99.8, suffix: "%", icon: ShieldCheck, delay: 0.3 },
-  { label: "Experience", value: 5, suffix: "Yrs+", icon: Clock, delay: 0.4 },
+  { label: "Returns Filed", value: 829, suffix: "+", icon: FileText, delay: 0.1, desc: "Successfully processed tax filings for HNI clients." },
+  { label: "Managed", value: 15, prefix: "₹", suffix: "cr+", icon: ArrowUpRight, delay: 0.2, desc: "Total assets under management in 2024-25." },
+  { label: "Accuracy", value: 99.8, suffix: "%", icon: ShieldCheck, delay: 0.3, desc: "Precision rate in high-stakes financial auditing." },
+  { label: "Experience", value: 5, suffix: "Yrs+", icon: Clock, delay: 0.4, desc: "Dedicated expertise in Indian tax compliance." },
 ];
 
 const bengaliFirstNames = [
   "Arjun", "Sohini", "Pritam", "Ananya", "Rahul", "Ishita", "Ayan", "Moumita",
   "Sourav", "Tiyasha", "Deepak", "Riya", "Subho", "Payel", "Joy", "Sneha",
-  "Abhi", "Pooja", "Vikram", "Tanwi"
+  "Abhi", "Pooja", "Vikram", "Tanwi", "Amit", "Bishal", "Kavita", "Sagar",
+  "Dipa", "Kunal", "Tania", "Rohan", "Sathi", "Niloy"
 ];
 
 function AnimatedNumber({ value, precision = 0 }) {
@@ -35,12 +35,12 @@ function NetworkVisualization() {
   const dimensions = useMemo(() => {
     if (size.width === 0) return null;
     return {
-      // Flattened Y-radius (0.3 and 0.15) to keep nodes within the small height
+      // Adjusted radii to keep 30 nodes within the smaller height
       rings: [
-        { rx: size.width * 0.42, ry: size.height * 0.32, count: 12 }, 
-        { rx: size.width * 0.22, ry: size.height * 0.18, count: 8 }
+        { rx: size.width * 0.45, ry: size.height * 0.35, count: 18 }, 
+        { rx: size.width * 0.25, ry: size.height * 0.20, count: 12 }
       ],
-      avatarSize: Math.min(size.height * 0.18, 42),
+      avatarSize: 28,
       centerX: size.width / 2,
       centerY: size.height / 2
     };
@@ -48,7 +48,7 @@ function NetworkVisualization() {
 
   useEffect(() => {
     const updateSize = () => {
-      const parent = document.getElementById('network-inner-container');
+      const parent = document.getElementById('network-outer-wrapper');
       if (parent) setSize({ width: parent.offsetWidth, height: parent.offsetHeight });
     };
     updateSize();
@@ -62,11 +62,11 @@ function NetworkVisualization() {
     let nameIdx = 0;
     dimensions.rings.forEach((ring, ringIdx) => {
       for (let i = 0; i < ring.count; i++) {
-        const angle = (i / ring.count) * 2 * Math.PI + (ringIdx * 0.8);
+        const angle = (i / ring.count) * 2 * Math.PI + (ringIdx * 0.5);
         list.push({
           id: `node-${ringIdx}-${i}`,
           name: bengaliFirstNames[nameIdx % bengaliFirstNames.length],
-          image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${nameIdx}&backgroundColor=b6e3f4,c0aede,d1d4f9`,
+          image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${nameIdx + 10}&backgroundColor=b6e3f4,c0aede`,
           cx: dimensions.centerX + ring.rx * Math.cos(angle),
           cy: dimensions.centerY + ring.ry * Math.sin(angle)
         });
@@ -88,7 +88,7 @@ function NetworkVisualization() {
     const interval = setInterval(() => {
       const ids = [...avatars.map(a => a.id), 'center'];
       if (ids.length < 2) return;
-      const pairs = Array.from({ length: 5 }, () => ({
+      const pairs = Array.from({ length: 10 }, () => ({
         from: ids[Math.floor(Math.random() * ids.length)],
         to: ids[Math.floor(Math.random() * ids.length)]
       })).filter(p => p.from !== p.to);
@@ -98,44 +98,29 @@ function NetworkVisualization() {
   }, [avatars]);
 
   return (
-    <div id="network-inner-container" className="relative w-full h-full">
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
-        <defs><filter id="ray-glow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter></defs>
+    <div className="absolute inset-0 w-full h-full pointer-events-none">
+      <svg className="absolute inset-0 w-full h-full z-10">
         <AnimatePresence>
           {activeConnections.map((conn, idx) => {
             const from = allPositions[conn.from], to = allPositions[conn.to];
             return from && to && (
-              <motion.line key={idx} x1={from.cx} y1={from.cy} x2={to.cx} y2={to.cy} 
-                className="stroke-blue-500 dark:stroke-yellow-400" strokeWidth="2"
-                style={{ filter: 'url(#ray-glow)' }}
-                initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.5 }} exit={{ opacity: 0 }}
+              <motion.line key={`${conn.from}-${conn.to}-${idx}`} x1={from.cx} y1={from.cy} x2={to.cx} y2={to.cy} 
+                className="stroke-blue-500/30 dark:stroke-yellow-400/30" strokeWidth="1"
+                initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} exit={{ opacity: 0 }}
               />
             );
           })}
         </AnimatePresence>
       </svg>
-
-      {dimensions && (
-        <div className="relative z-20 w-full h-full">
-          <div className="absolute" style={{ left: dimensions.centerX, top: dimensions.centerY, transform: 'translate(-50%, -50%)' }}>
-            <div className="rounded-full border-2 border-blue-600 dark:border-yellow-500 bg-white dark:bg-slate-800 p-0.5 shadow-lg">
-              <div className="w-7 h-7 flex items-center justify-center font-black text-blue-600 dark:text-yellow-500 text-[9px]">HUB</div>
-            </div>
+      {dimensions && avatars.map(avatar => (
+        <div key={avatar.id} className="absolute flex flex-col items-center" 
+             style={{ left: avatar.cx, top: avatar.cy, transform: 'translate(-50%, -50%)' }}>
+          <div className="rounded-full border border-blue-200 dark:border-white/10 overflow-hidden bg-white dark:bg-slate-800 shadow-sm" 
+               style={{ width: dimensions.avatarSize, height: dimensions.avatarSize }}>
+            <img src={avatar.image} className="w-full h-full object-cover" alt=""/>
           </div>
-          {avatars.map(avatar => (
-            <div key={avatar.id} className="absolute flex flex-col items-center pointer-events-none" 
-                 style={{ left: avatar.cx, top: avatar.cy, transform: 'translate(-50%, -50%)' }}>
-              <span className="bg-white/90 dark:bg-slate-800 px-1 rounded text-[7px] font-black mb-0.5 text-blue-700 dark:text-yellow-100 border border-blue-100 dark:border-slate-700 shadow-sm">
-                {avatar.name}
-              </span>
-              <div className="rounded-full border border-blue-300 dark:border-white/20 overflow-hidden bg-white dark:bg-slate-800 shadow-sm" 
-                   style={{ width: dimensions.avatarSize, height: dimensions.avatarSize }}>
-                <img src={avatar.image} className="w-full h-full object-cover" alt={avatar.name}/>
-              </div>
-            </div>
-          ))}
         </div>
-      )}
+      ))}
     </div>
   );
 }
@@ -144,50 +129,49 @@ export default function PremiumStats() {
   return (
     <section className="w-full bg-slate-50 dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        {/* items-stretch is the key to matching heights */}
-        <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] gap-6 items-stretch">
+        
+        {/* Main Wrapper: Back to original compact height */}
+        <div id="network-outer-wrapper" 
+             className="relative flex items-center justify-center min-h-[320px] md:min-h-[280px] w-full border-2 border-blue-500/20 dark:border-yellow-500/30 rounded-[2.5rem] overflow-hidden p-6 shadow-2xl">
           
-          {/* Left: Network Box matches the grid height */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }} 
-            whileInView={{ opacity: 1, x: 0 }} 
-            viewport={{ once: true }}
-            className="relative border-2 border-blue-500/30 dark:border-yellow-500/40 rounded-3xl overflow-hidden p-4"
-            style={{ background: 'linear-gradient(135deg, rgba(136, 174, 225, 0.4) 0%, rgba(255, 253, 236, 0.6) 100%)' }}
-          >
-            {/* Dark Theme Gradient */}
-            <div className="absolute inset-0 hidden dark:block -z-10" 
-                 style={{ background: 'linear-gradient(135deg, rgba(15, 23, 42, 1) 0%, rgba(45, 30, 5, 1) 100%)' }} />
-            
-            <NetworkVisualization />
-          </motion.div>
-
-          {/* Right: Stats Grid (Defines the section height) */}
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: stat.delay }}
-                className="relative group flex flex-col justify-center rounded-2xl bg-white dark:bg-[#0f172a] p-5 border border-blue-500/20 dark:border-yellow-500/20 shadow-lg dark:shadow-none min-h-[140px]"
-              >
-                <div className="mb-2 p-1.5 w-fit rounded-full bg-blue-50 dark:bg-yellow-500/10 text-blue-600 dark:text-yellow-500">
-                  <stat.icon size={18} strokeWidth={2.5} />
-                </div>
-                <div className="flex items-baseline text-2xl md:text-3xl font-black text-blue-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-b dark:from-yellow-200 dark:to-yellow-600">
-                  {stat.prefix && <span className="mr-0.5 text-lg font-bold">{stat.prefix}</span>}
-                  <AnimatedNumber value={stat.value} precision={stat.value % 1 === 0 ? 0 : 1} />
-                  <span className="text-sm ml-0.5 font-extrabold text-blue-500 dark:text-yellow-500/80">{stat.suffix}</span>
-                </div>
-                <p className="mt-1 text-[10px] font-black uppercase tracking-tight text-slate-400 dark:text-blue-100/40">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
+          {/* Background Layer: Sharp, densely populated network */}
+          <div className="absolute inset-0 z-0 bg-white dark:bg-[#020617]">
+             <div className="absolute inset-0" 
+                  style={{ background: 'linear-gradient(135deg, rgba(136, 174, 225, 0.05) 0%, rgba(255, 253, 236, 0.1) 100%)' }} />
+             <NetworkVisualization />
           </div>
 
+          {/* Foreground Layer: Your Glass Card configuration */}
+          <div className="relative z-30 w-full max-w-6xl">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
+                  className="bg-white/70 dark:bg-slate-900/80 backdrop-blur-2xl[1px] border border-white/50 dark:border-slate-700 p-4 md:p-6 rounded-2xl shadow-2xl"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-1.5 bg-blue-500/10 dark:bg-yellow-500/10 rounded-full">
+                      <stat.icon className="text-blue-600 dark:text-yellow-500" size={20} />
+                    </div>
+                    <div className="text-slate-900 dark:text-white font-extrabold text-xl md:text-2xl italic flex items-baseline">
+                      {stat.prefix && <span className="text-sm mr-0.5">{stat.prefix}</span>}
+                      <AnimatedNumber value={stat.value} precision={stat.value % 1 === 0 ? 0 : 1} />
+                      <span className="text-sm ml-0.5">{stat.suffix}</span>
+                    </div>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-400 text-[10px] font-medium leading-tight">
+                    <span className="font-black text-slate-900 dark:text-slate-200 block mb-0.5 uppercase tracking-tighter text-[9px]">
+                        {stat.label}
+                    </span>
+                    {stat.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          
         </div>
       </div>
     </section>

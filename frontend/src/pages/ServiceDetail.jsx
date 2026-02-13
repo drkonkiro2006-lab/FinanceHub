@@ -6,10 +6,6 @@ import { Download, Calculator, Info, Wallet, PieChart, ShieldCheck } from "lucid
 
 import itrImg from "../assets/images/service-itr.jpg"
 import gstRegImg from "../assets/images/service-gst-registration.jpg"
-import gstRetImg from "../assets/images/service-gst-returns.jpg"
-import taxPlanImg from "../assets/images/service-tax-planning.jpg"
-import accountingImg from "../assets/images/service-accounting.jpg"
-import consultingImg from "../assets/images/service-business-consulting.jpg"
 
 /* =========================
    TAX CALCULATION UTIL

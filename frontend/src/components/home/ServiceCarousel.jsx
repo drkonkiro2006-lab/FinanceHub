@@ -79,13 +79,13 @@ export default function ServiceCarousel() {
   };
 
   return (
-    <section className="w-full py-20 bg-[#F8FAFC] dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
+    <section className="w-full py-0 bg-[#F8FAFC] dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
         <div className="max-w-2xl">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 mb-4"
+            className="flex items-center gap-2 mb-4[0]"
           >
             <span className="p-1.5 rounded-lg bg-blue-600/10 dark:bg-amber-500/10 text-blue-600 dark:text-amber-500">
               <Sparkles size={16} />

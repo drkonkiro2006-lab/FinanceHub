@@ -19,7 +19,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-32 grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto lg: grid lg:grid-cols-2 gap-16 items-center">
         
         {/* Left Column: Content */}
         <motion.div 
