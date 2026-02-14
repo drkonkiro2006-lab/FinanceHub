@@ -13,12 +13,16 @@ export default function Faqs() {
   const [open, setOpen] = useState(null)
 
   return (
-    <section className="relative w-full py-24 bg-white dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
+    // Reduced top padding (pt-10) to move the section up
+    <section className="relative w-full pt-10 pb-24 bg-white dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
+      
       {/* Background Decorative Element */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 dark:bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="relative max-w-4xl mx-auto px-6">
-        <div className="flex flex-col items-center text-center mb-16">
+      <div className="relative max-w-6xl mx-auto px-6">
+        
+        {/* Header Section */}
+        <div className="flex flex-col items-center text-center mb-12">
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -36,7 +40,8 @@ export default function Faqs() {
           </p>
         </div>
 
-        <div className="space-y-4">
+        {/* FAQ Grid Section (Side by Side) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
           {items.map((it, idx) => {
             const isOpen = open === idx
             return (
@@ -45,7 +50,7 @@ export default function Faqs() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className={`group rounded-[2rem] border transition-all duration-500 overflow-hidden ${
+                className={`group rounded-2xl border transition-all duration-500 overflow-hidden ${
                   isOpen 
                   ? 'bg-white dark:bg-white/[0.04] border-blue-200 dark:border-amber-500/30 shadow-xl shadow-blue-500/5' 
                   : 'bg-slate-50 dark:bg-white/[0.02] border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20'
@@ -53,17 +58,17 @@ export default function Faqs() {
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between p-6 md:p-8 text-left focus:outline-none"
+                  className="w-full flex items-center justify-between p-5 text-left focus:outline-none"
                 >
-                  <span className={`text-lg md:text-xl font-bold transition-colors duration-300 ${
+                  <span className={`text-base font-bold transition-colors duration-300 ${
                     isOpen ? 'text-blue-600 dark:text-amber-500' : 'text-slate-800 dark:text-slate-200'
                   }`}>
                     {it.q}
                   </span>
-                  <div className={`p-2 rounded-full transition-all duration-500 ${
+                  <div className={`p-1.5 ml-3 rounded-full transition-all duration-500 ${
                     isOpen ? 'bg-blue-600 dark:bg-amber-500 text-white dark:text-black rotate-180' : 'bg-slate-200 dark:bg-white/10 text-slate-500'
                   }`}>
-                    <ChevronDown size={20} />
+                    <ChevronDown size={16} />
                   </div>
                 </button>
 
@@ -75,7 +80,7 @@ export default function Faqs() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                     >
-                      <div className="px-6 md:px-8 pb-8 text-slate-600 dark:text-slate-400 text-lg leading-relaxed border-t border-slate-100 dark:border-white/5 pt-6">
+                      <div className="px-5 pb-5 text-slate-600 dark:text-slate-400 text-sm leading-relaxed border-t border-slate-100 dark:border-white/5 pt-4">
                         {it.a}
                       </div>
                     </motion.div>
@@ -86,24 +91,31 @@ export default function Faqs() {
           })}
         </div>
 
-        {/* Support Footer */}
+        {/* Support Footer with WhatsApp Link */}
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          className="mt-16 p-8 rounded-[2.5rem] bg-blue-600 dark:bg-amber-500 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl shadow-blue-500/20 dark:shadow-amber-500/10"
+          className="mt-12 p-6 md:p-8 rounded-[2rem] bg-blue-600 dark:bg-amber-500 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl shadow-blue-500/20 dark:shadow-amber-500/10"
         >
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-md">
-              <MessageCircle className="text-white dark:text-black" size={28} />
+              <MessageCircle className="text-white dark:text-black" size={24} />
             </div>
             <div className="text-center md:text-left">
-              <h4 className="text-xl font-black text-white dark:text-black">Still have questions?</h4>
-              <p className="text-white/80 dark:text-black/70 font-medium">Our certified experts are ready to assist you 24/7.</p>
+              <h4 className="text-lg md:text-xl font-black text-white dark:text-black">Still have questions?</h4>
+              <p className="text-white/80 dark:text-black/70 font-medium text-sm md:text-base">Our certified experts are ready to assist you.</p>
             </div>
           </div>
-          <button className="px-8 py-4 bg-white dark:bg-black text-blue-600 dark:text-amber-500 font-black text-sm uppercase tracking-widest rounded-2xl hover:scale-105 transition-transform active:scale-95 shadow-xl">
+          
+          {/* CHANGED: Converted button to <a> tag for WhatsApp link */}
+          <a 
+            href="https://wa.me/910000000000"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 md:px-8 md:py-4 bg-white dark:bg-black text-blue-600 dark:text-amber-500 font-black text-xs md:text-sm uppercase tracking-widest rounded-2xl hover:scale-105 transition-transform active:scale-95 shadow-xl inline-block text-center"
+          >
             Contact Support
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>
