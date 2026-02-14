@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom"
 import { useState, useRef, useMemo, useCallback } from "react"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
-import { Download, Calculator, Info, Wallet, PieChart, ShieldCheck } from "lucide-react"
+import { Download, Calculator, Info, Wallet, PieChart, ShieldCheck, Briefcase, User } from "lucide-react"
 
 import itrImg from "../assets/images/service-itr.jpg"
 import gstRegImg from "../assets/images/service-gst-registration.jpg"
@@ -14,11 +14,28 @@ import gstRegImg from "../assets/images/service-gst-registration.jpg"
 const toNumber = (val) => Number(val) || 0
 
 const computeTax = (form) => {
-  const salary = toNumber(form.salary)
-  const otherIncome = toNumber(form.otherIncome)
+  let incomeFromITR = 0;
+  
+  if (form.itrType === "itr1") {
+    incomeFromITR = toNumber(form.salary);
+  } else {
+    // ITR-4 Presumptive Logic
+    const turnover = toNumber(form.turnover);
+    if (form.presumptiveType === "business") {
+      const profitPercent = Math.max(6, Math.min(8, toNumber(form.profitPercent) || 8));
+      incomeFromITR = turnover * (profitPercent / 100);
+    } else {
+      // Professional 44ADA is fixed at 50%
+      incomeFromITR = turnover * 0.50;
+    }
+  }
 
+  const otherIncome = toNumber(form.otherIncome)
   let stdDeduction = form.regime === "new" ? 75000 : 50000
-  let grossIncomeAfterStd = Math.max(0, salary + otherIncome - stdDeduction)
+  
+  // Standard deduction only applies to Salary (ITR-1)
+  const appliedStdDeduction = form.itrType === "itr1" ? stdDeduction : 0;
+  let grossIncomeAfterStd = Math.max(0, incomeFromITR + otherIncome - appliedStdDeduction)
 
   let deductionsTotal = 0
   if (form.regime === "old") {
@@ -33,6 +50,7 @@ const computeTax = (form) => {
   let taxableIncome = Math.max(0, grossIncomeAfterStd - deductionsTotal)
   let tax = 0
 
+  // Budget 2026 Slabs (New) & Old Slabs Logic
   if (form.regime === "new") {
     if (taxableIncome <= 400000) tax = 0
     else if (taxableIncome <= 800000) tax = (taxableIncome - 400000) * 0.05
@@ -53,18 +71,13 @@ const computeTax = (form) => {
     if (taxableIncome <= 500000) tax = Math.max(0, tax - 12500)
   }
 
-  let surchargeRate = 0
-  if (taxableIncome > 50000000) surchargeRate = form.regime === "old" ? 0.37 : 0.25
-  else if (taxableIncome > 20000000) surchargeRate = 0.25
-  else if (taxableIncome > 10000000) surchargeRate = 0.15
-  else if (taxableIncome > 5000000) surchargeRate = 0.1
-
-  const surcharge = tax * surchargeRate
+  const surcharge = taxableIncome > 5000000 ? tax * 0.10 : 0 // Simplified surcharge
   const cess = (tax + surcharge) * 0.04
 
   return {
-    grossTotal: salary + otherIncome,
-    stdDeduction,
+    grossTotal: incomeFromITR + otherIncome,
+    incomeFromITR,
+    stdDeduction: appliedStdDeduction,
     deductionsTotal,
     taxableIncome,
     baseTax: tax,
@@ -74,15 +87,15 @@ const computeTax = (form) => {
   }
 }
 
-/* =========================
-   COMPONENTS
-   ========================= */
-
 function IncomeTaxCalculator() {
   const [form, setForm] = useState({
+    itrType: "itr1", // "itr1" or "itr4"
     regime: "new",
     age: "below60",
     salary: "",
+    turnover: "",
+    presumptiveType: "business", // "business" (44AD) or "professional" (44ADA)
+    profitPercent: "8",
     otherIncome: "",
     deductions80C: "",
     deductions80D: "",
@@ -107,110 +120,124 @@ function IncomeTaxCalculator() {
     const pdfWidth = pdf.internal.pageSize.getWidth()
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight)
-    pdf.save("Tax_Report.pdf")
+    pdf.save(`Tax_Report_${form.itrType.toUpperCase()}.pdf`)
   }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 md:p-8 transition-colors">
       <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8">
         
-        {/* Left Panel */}
+        {/* Left Panel: Configuration */}
         <div className="lg:col-span-5 space-y-6">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-indigo-600 rounded-2xl shadow-indigo-500/20 shadow-lg">
               <Calculator className="text-white w-6 h-6" />
             </div>
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white">Tax Planner</h1>
+            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Tax Planner</h1>
           </div>
 
-          <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-xl">
-            <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl mb-6">
-              <button
-                onClick={() => setForm(p => ({ ...p, regime: "new" }))}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${form.regime === "new" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 dark:text-slate-400"}`}
-              >
-                New Regime
+          <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-xl space-y-6">
+            
+            {/* ITR TYPE TOGGLE */}
+            <div>
+              <label className="text-xs font-bold text-slate-500 uppercase mb-3 block">Choose Return Type</label>
+              <div className="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+                <button onClick={() => setForm(p => ({ ...p, itrType: "itr1" }))} className={`flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-bold transition-all ${form.itrType === "itr1" ? "bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400" : "text-slate-500"}`}>
+                  <User size={16}/> ITR-1 (Salary)
+                </button>
+                <button onClick={() => setForm(p => ({ ...p, itrType: "itr4" }))} className={`flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-bold transition-all ${form.itrType === "itr4" ? "bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400" : "text-slate-500"}`}>
+                  <Briefcase size={16}/> ITR-4 (Business)
+                </button>
+              </div>
+            </div>
+
+            {/* REGIME TOGGLE */}
+            <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+              <button onClick={() => setForm(p => ({ ...p, regime: "new" }))} className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${form.regime === "new" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 dark:text-slate-400"}`}>
+                New Regime (2026)
               </button>
-              <button
-                onClick={() => setForm(p => ({ ...p, regime: "old" }))}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${form.regime === "old" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 dark:text-slate-400"}`}
-              >
+              <button onClick={() => setForm(p => ({ ...p, regime: "old" }))} className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${form.regime === "old" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 dark:text-slate-400"}`}>
                 Old Regime
               </button>
             </div>
 
             <div className="space-y-4">
-              {form.regime === "old" && (
-                <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1 block">Age Bracket</label>
-                  <select name="age" value={form.age} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 outline-none">
-                    <option value="below60">Under 60 Years</option>
-                    <option value="60to80">Senior (60-80)</option>
-                    <option value="above80">Super Senior (80+)</option>
-                  </select>
+              {form.itrType === "itr1" ? (
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Annual Gross Salary</label>
+                    <input type="number" name="salary" value={form.salary} onChange={handleChange} placeholder="Enter Salary" className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4 p-4 bg-indigo-50 dark:bg-indigo-900/10 rounded-2xl border border-indigo-100 dark:border-indigo-800/50">
+                   <div className="space-y-1">
+                    <label className="text-xs font-bold text-indigo-600 uppercase">Nature of Income</label>
+                    <select name="presumptiveType" value={form.presumptiveType} onChange={handleChange} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-bold">
+                      <option value="business">Business (Sec 44AD)</option>
+                      <option value="professional">Professional (Sec 44ADA)</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Gross Turnover / Receipts</label>
+                    <input type="number" name="turnover" value={form.turnover} onChange={handleChange} placeholder="Enter Turnover" className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                  {form.presumptiveType === "business" && (
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 flex justify-between">Profit Percentage <span>{form.profitPercent}%</span></label>
+                      <input type="range" name="profitPercent" min="6" max="25" step="0.5" value={form.profitPercent} onChange={handleChange} className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
+                      <p className="text-[10px] text-slate-400 italic mt-1">*Min 6% for Digital payments, 8% for Cash</p>
+                    </div>
+                  )}
+                  {form.presumptiveType === "professional" && (
+                    <div className="p-3 bg-white dark:bg-slate-800 rounded-xl border border-dashed border-indigo-300">
+                      <p className="text-xs font-bold text-indigo-600">Presumptive Profit Locked at 50%</p>
+                    </div>
+                  )}
                 </div>
               )}
 
-              {/* Individual Inputs explicitly defined to prevent focus loss */}
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Annual Gross Salary</label>
-                  <input type="number" name="salary" value={form.salary} onChange={handleChange} placeholder="0" className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
-                </div>
+              <div className="space-y-1">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Other Income (Rent, Interest)</label>
+                <input type="number" name="otherIncome" value={form.otherIncome} onChange={handleChange} placeholder="0" className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
 
-                <div className="space-y-1">
-                  <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Other Income</label>
-                  <input type="number" name="otherIncome" value={form.otherIncome} onChange={handleChange} placeholder="Rent, Interest, etc." className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
-                </div>
-
-                {form.regime === "old" && (
-                  <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800 space-y-4">
-                    <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">Deductions (Old Regime Only)</p>
-                    <div className="grid grid-cols-1 gap-4">
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-600 dark:text-slate-400 flex justify-between">Section 80C <span className="text-amber-600">Max ₹1.5L</span></label>
-                        <input type="number" name="deductions80C" value={form.deductions80C} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-600 dark:text-slate-400 flex justify-between">Section 80D <span className="text-amber-600">Max ₹1L</span></label>
-                        <input type="number" name="deductions80D" value={form.deductions80D} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-600 dark:text-slate-400">HRA Exemption</label>
-                        <input type="number" name="hra" value={form.hra} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-600 dark:text-slate-400 flex justify-between">Home Loan Interest <span className="text-amber-600">Max ₹2L</span></label>
-                        <input type="number" name="homeLoanInterest" value={form.homeLoanInterest} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-600 dark:text-slate-400 flex justify-between">NPS (80CCD) <span className="text-amber-600">Max ₹50k</span></label>
-                        <input type="number" name="nps" value={form.nps} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" />
-                      </div>
+              {form.regime === "old" && (
+                <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800 space-y-4">
+                  <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">Deductions (Old Regime Only)</p>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-600 flex justify-between">Section 80C <span className="text-amber-600">Max ₹1.5L</span></label>
+                      <input type="number" name="deductions80C" value={form.deductions80C} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-sm" />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-600 flex justify-between">Section 80D <span className="text-amber-600">Max ₹1L</span></label>
+                      <input type="number" name="deductions80D" value={form.deductions80D} onChange={handleChange} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-sm" />
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right Panel */}
+        {/* Right Panel: Summary */}
         <div className="lg:col-span-7 space-y-6">
           <div ref={reportRef} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
             <div className="p-8 border-b border-slate-200 dark:border-slate-800 bg-gradient-to-br from-indigo-50 to-white dark:from-slate-900 dark:to-indigo-950/30">
-              <div className="flex justify-between items-end">
+              <div className="flex justify-between items-start">
                 <div>
                   <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 mb-1">
                     <PieChart size={16} />
-                    <span className="text-xs font-bold uppercase tracking-wider">Estimated Tax Payable</span>
+                    <span className="text-xs font-bold uppercase tracking-wider">{form.itrType.toUpperCase()} Tax Estimate</span>
                   </div>
                   <h2 className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">
                     ₹{result.totalTax.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
                   </h2>
                 </div>
-                <div className="bg-indigo-100 dark:bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-200 dark:border-indigo-500/20">
-                  <span className="text-indigo-700 dark:text-indigo-400 text-[10px] font-black uppercase">FY 2026-27</span>
+                <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 text-center">
+                   <p className="text-[10px] font-black text-slate-400 uppercase">Regime</p>
+                   <p className="text-sm font-black text-indigo-600 uppercase">{form.regime}</p>
                 </div>
               </div>
             </div>
@@ -219,39 +246,32 @@ function IncomeTaxCalculator() {
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="text-slate-400 text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-slate-800">
-                    <th className="pb-4 font-bold">Tax Breakup</th>
+                    <th className="pb-4 font-bold">Income Breakup</th>
                     <th className="pb-4 font-bold text-right">Amount (₹)</th>
                   </tr>
                 </thead>
                 <tbody className="text-slate-700 dark:text-slate-300 divide-y divide-slate-100 dark:divide-slate-800/50">
                   <tr>
-                    <td className="py-4 flex items-center gap-2 font-medium"><Wallet size={14} /> Gross Total Income</td>
-                    <td className="py-4 text-right font-bold">{result.grossTotal.toLocaleString()}</td>
+                    <td className="py-4 font-medium flex items-center gap-2">
+                       <Wallet size={14} className="text-slate-400"/> 
+                       {form.itrType === "itr1" ? "Salary Income" : `Presumptive Profit (${form.presumptiveType === "business" ? form.profitPercent + "%" : "50%"})`}
+                    </td>
+                    <td className="py-4 text-right font-bold">{result.incomeFromITR.toLocaleString()}</td>
                   </tr>
                   <tr>
                     <td className="py-4 font-medium">Standard Deduction</td>
                     <td className="py-4 text-right text-rose-600 font-bold">- {result.stdDeduction.toLocaleString()}</td>
                   </tr>
-                  {form.regime === "old" && (
-                    <tr>
-                      <td className="py-4 font-medium">Investments & Deductions</td>
-                      <td className="py-4 text-right text-rose-600 font-bold">- {result.deductionsTotal.toLocaleString()}</td>
-                    </tr>
-                  )}
-                  <tr className="bg-indigo-50 dark:bg-indigo-500/5">
+                  <tr className="bg-indigo-50/50 dark:bg-indigo-500/5">
                     <td className="py-4 font-bold text-indigo-700 dark:text-indigo-300">Net Taxable Income</td>
                     <td className="py-4 text-right font-black text-indigo-700 dark:text-indigo-300">{result.taxableIncome.toLocaleString()}</td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-medium text-slate-500">Base Income Tax</td>
+                    <td className="py-4 font-medium text-slate-500">Income Tax (Slabs)</td>
                     <td className="py-4 text-right text-slate-900 dark:text-white">{result.baseTax.toLocaleString()}</td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-medium text-slate-500">Surcharge</td>
-                    <td className="py-4 text-right text-slate-900 dark:text-white">{result.surcharge.toLocaleString()}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 font-medium text-slate-500">Education Cess (4%)</td>
+                    <td className="py-4 font-medium text-slate-500">Health & Education Cess (4%)</td>
                     <td className="py-4 text-right text-slate-900 dark:text-white">{result.cess.toLocaleString()}</td>
                   </tr>
                 </tbody>
@@ -260,18 +280,15 @@ function IncomeTaxCalculator() {
               <div className="mt-8 flex gap-3 p-4 bg-amber-50 dark:bg-amber-900/10 rounded-2xl border border-amber-100 dark:border-amber-900/20">
                 <ShieldCheck className="text-emerald-600 shrink-0" size={20} />
                 <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                  Calculated using <span className="font-bold text-slate-900 dark:text-white">Budget 2026</span> guidelines. Figures are indicative.
+                  {form.itrType === "itr4" && "Note: ITR-4 is for small businesses (44AD) and professionals (44ADA) where books of accounts are not required. "}
+                  Calculated based on Budget 2026.
                 </p>
               </div>
             </div>
           </div>
 
-          <button
-            onClick={downloadReport}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-xl shadow-indigo-500/20 transition-all active:scale-[0.98]"
-          >
-            <Download size={20} />
-            Download Detailed Report
+          <button onClick={downloadReport} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-xl shadow-indigo-500/20 transition-all active:scale-[0.98]">
+            <Download size={20} /> Download {form.itrType.toUpperCase()} Report
           </button>
         </div>
       </div>
