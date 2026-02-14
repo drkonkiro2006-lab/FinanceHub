@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* CSS Variables for Light/Dark Mode */
 :root {
   /* Core text */
@@ -208,5 +214,13 @@
 
   .theme-transition-surface {
     transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
+  }
+
+  .pt-safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .pb-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }

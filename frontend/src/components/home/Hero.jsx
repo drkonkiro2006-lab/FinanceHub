@@ -5,7 +5,7 @@ import { ShieldCheck, BadgeCheck, Lock, Award, ArrowUpRight, CheckCircle2, Star,
 
 export default function Hero() {
   return (
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-slate-50 dark:bg-[#020617] transition-colors duration-500">
+    <section className="relative w-full max-w-full min-h-screen flex items-center overflow-hidden bg-slate-50 dark:bg-[#020617] transition-colors duration-500">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-[120px]" />
@@ -19,10 +19,11 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative max-w-7xl mx-auto lg: grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-2 gap-16 items-center">
         
         {/* Left Column: Content */}
         <motion.div 
+          className="max-w-md mx-auto text-center lg:max-w-none lg:mx-0 lg:text-left"
           initial={{ opacity: 0, x: -30 }} 
           animate={{ opacity: 1, x: 0 }} 
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -41,11 +42,11 @@ export default function Hero() {
             Elevate Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Financial Future</span> with Precision.
           </h1>
           
-          <p className="mt-8 text-slate-600 dark:text-slate-400 text-lg lg:text-xl leading-relaxed max-w-xl">
+          <p className="mt-8 text-slate-600 dark:text-slate-400 text-lg lg:text-xl leading-relaxed max-w-xl mx-auto lg:mx-0">
             Experience elite-tier accounting and tax strategies. We transform complex compliance into your competitive advantage with proactive, certified expertise.
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-wrap gap-4 justify-center lg:justify-start">
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Link to="/contact" className="group flex items-center gap-2 bg-blue-600 dark:bg-white text-white dark:text-slate-950 px-8 py-4 rounded-full font-bold transition-all hover:bg-blue-700 dark:hover:bg-blue-50 shadow-xl shadow-blue-500/20 dark:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                 Book Consultation
@@ -101,7 +102,7 @@ export default function Hero() {
               <img 
                 src={hero} 
                 alt="Professional finance consulting" 
-                className="w-full h-[500px] lg:h-[650px] object-cover scale-105 hover:scale-100 transition-transform duration-[2s]"
+                className="w-full h-auto lg:h-[650px] object-cover scale-105 hover:scale-100 transition-transform duration-[2s]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 dark:from-[#020617]/80 via-transparent to-transparent" />
             </div>
