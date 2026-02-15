@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { motion, useMotionValue, useSpring, useInView, AnimatePresence } from 'framer-motion';
 import { FileText, ArrowUpRight, ShieldCheck, Clock } from 'lucide-react';
@@ -143,28 +144,28 @@ export default function PremiumStats() {
 
           {/* Foreground Layer: Your Glass Card configuration */}
           <div className="relative z-30 w-full max-w-6xl">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
-                  className="bg-white/70 dark:bg-slate-900/80 backdrop-blur-2xl[1px] border border-white/50 dark:border-slate-700 p-4 md:p-6 rounded-2xl shadow-2xl"
+                  className="bg-white/70 dark:bg-slate-900/80 backdrop-blur-2xl[1px] border-white/20 dark:border-slate-600/30 shadow-xl rounded-2xl p-6 flex flex-col justify-between h-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-900/30 hover:shadow-2xl"
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-1.5 bg-blue-500/10 dark:bg-yellow-500/10 rounded-full">
-                      <stat.icon className="text-blue-600 dark:text-yellow-500" size={20} />
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-100/35 dark:bg-yellow-500/10 shrink-0">
+                      <stat.icon className="w-5 h-5 text-blue-600 dark:text-yellow-500" />
                     </div>
-                    <div className="text-slate-900 dark:text-white font-extrabold text-xl md:text-2xl italic flex items-baseline">
-                      {stat.prefix && <span className="text-sm mr-0.5">{stat.prefix}</span>}
+                    <div className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white leading-none flex items-baseline whitespace-nowrap">
+                      {stat.prefix && <span className="text-xl align-top mr-0.5">{stat.prefix}</span>}
                       <AnimatedNumber value={stat.value} precision={stat.value % 1 === 0 ? 0 : 1} />
-                      <span className="text-sm ml-0.5">{stat.suffix}</span>
+                      <span className="text-xl align-top ml-0.5">{stat.suffix}</span>
                     </div>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400 text-[10px] font-medium leading-tight">
-                    <span className="font-black text-slate-900 dark:text-slate-200 block mb-0.5 uppercase tracking-tighter text-[9px]">
-                        {stat.label}
-                    </span>
+                  <div className="text-sm font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-100 mb-2">
+                    {stat.label}
+                  </div>
+                  <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400 max-w-[18rem]">
                     {stat.desc}
                   </p>
                 </motion.div>

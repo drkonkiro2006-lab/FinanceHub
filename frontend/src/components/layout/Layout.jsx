@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
-import InfoStrip from './InfoStrip.jsx'
-import MainNav from './MainNav.jsx'
-import { AnimatePresence, motion } from 'framer-motion'
+import DesktopNav from './DesktopNav.jsx'
+import MobileTopBar from './MobileTopBar.jsx'
+import MobileMenu from './MobileMenu.jsx'
+import MobileInfoPanel from './MobileInfoPanel.jsx'
 import { Linkedin, Twitter, Facebook, Instagram } from 'lucide-react'
 import logo from "../../../src/assets/images/mybrand.png";
 
 export default function Layout({ children }) {
   const [stuck, setStuck] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [infoOpen, setInfoOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => {
@@ -18,21 +21,21 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-200 flex flex-col">
-      <div className="bg-white dark:bg-slate-900 transition-colors duration-200">
-        <InfoStrip />
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={stuck ? 'stuck' : 'free'}
-            className="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-gray-100 dark:border-slate-800 transition-colors duration-200"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          >
-            <MainNav />
-          </motion.div>
-        </AnimatePresence>
-      </div>
+      <MobileTopBar
+        onMenu={() => {
+          setInfoOpen(false)
+          setMenuOpen(true)
+        }}
+        onInfo={() => {
+          setMenuOpen(false)
+          setInfoOpen(true)
+        }}
+      />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileInfoPanel open={infoOpen} onClose={() => setInfoOpen(false)} />
+      <div className="lg:hidden h-[calc(3rem+env(safe-area-inset-top))]" />
+
+      <DesktopNav stuck={stuck} />
 
       <main className="w-full flex-1">{children}</main>
 

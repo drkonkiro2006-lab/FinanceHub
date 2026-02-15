@@ -33,7 +33,7 @@ export default function MainNav() {
         ${scrolled 
           ? 'bg-white/80 dark:bg-[#020617]/80 backdrop-blur-xl h-20 shadow-2xl shadow-blue-500/10 border-b border-slate-200 dark:border-white/5' 
           : 'bg-transparent h-24'} 
-        flex items-center justify-between px-10`}
+        hidden lg:flex items-center justify-between px-10`}
       >
         {/* Brand */}
         <Link to="/" className="relative group flex items-center gap-3">
