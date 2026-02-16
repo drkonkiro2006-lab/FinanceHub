@@ -66,8 +66,12 @@ export default function MainNav() {
                   initial={{ opacity: 0, y: 15, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                  className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[480px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 z-50 bg-white dark:bg-[#0f172a] p-4"
-                >
+                  className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[520px] 
+                             rounded-[2rem] overflow-hidden z-50 p-4
+                             bg-white/95 dark:bg-slate-900/85 
+                             backdrop-blur-2xl backdrop-saturate-150
+                             border border-white/40 dark:border-white/10
+                             shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
                   <div className="grid grid-cols-2 gap-2">
                     {services.map((s) => (
                       <Link
