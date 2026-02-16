@@ -17,7 +17,7 @@ export default function MobileInfoPanel({ open, onClose }) {
     >
       <div
         className={`absolute inset-y-0 right-0 w-3/4 max-w-xs p-8 transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] 
-          bg-white/70 dark:bg-slate-900/70 
+          bg-white/40 dark:bg-slate-900/40 
           backdrop-blur-2xl backdrop-saturate-150
           border-l border-white/20 dark:border-slate-800/50 shadow-2xl ${
           open ? 'translate-x-0' : 'translate-x-full'

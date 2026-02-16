@@ -1,145 +1,106 @@
-import { useEffect, useState } from 'react'
-import DesktopNav from './DesktopNav.jsx'
-import MobileTopBar from './MobileTopBar.jsx'
-import MobileMenu from './MobileMenu.jsx'
-import MobileInfoPanel from './MobileInfoPanel.jsx'
-import { Linkedin, Twitter, Facebook, Instagram } from 'lucide-react'
+import { useEffect, useState } from 'react';
+import DesktopNav from './DesktopNav.jsx';
+import MobileTopBar from './MobileTopBar.jsx';
+import MobileMenu from './MobileMenu.jsx';
+import MobileInfoPanel from './MobileInfoPanel.jsx';
+import { Linkedin, Twitter, Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import logo from "../../../src/assets/images/mybrand.png";
 
 export default function Layout({ children }) {
-  const [stuck, setStuck] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [infoOpen, setInfoOpen] = useState(false)
+  const [stuck, setStuck] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setStuck(window.scrollY > 24)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const handleScroll = () => {
+      // Trigger "stuck" mode slightly earlier for smoother transition
+      setStuck(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-200 flex flex-col">
-      <MobileTopBar
-        onMenu={() => {
-          setInfoOpen(false)
-          setMenuOpen(true)
-        }}
-        onInfo={() => {
-          setMenuOpen(false)
-          setInfoOpen(true)
-        }}
-      />
+    <div className="min-h-screen bg-white dark:bg-slate-900 flex flex-col transition-colors duration-300">
+      {/* Mobile Nav Components */}
+      <MobileTopBar onMenu={() => setMenuOpen(true)} onInfo={() => setInfoOpen(true)} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       <MobileInfoPanel open={infoOpen} onClose={() => setInfoOpen(false)} />
-      <div className="lg:hidden h-[calc(3rem+env(safe-area-inset-top))]" />
 
+      {/* Desktop Navigation */}
       <DesktopNav stuck={stuck} />
 
-      <main className="w-full flex-1">{children}</main>
+      {/* Main Content Area: Padding top matches the total header height (40px info + ~80px nav) */}
+      <main className="flex-1 w-full pt-20 lg:pt-[120px]">
+        {children}
+      </main>
 
-      {/* Modern Gradient Footer with Same Text */}
-      <footer className="mt-10 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-slate-900 dark:to-black text-gray-900 dark:text-white py-12 px-4 border-t border-gray-200 dark:border-slate-800">
-        <div className="container mx-auto grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-
-          {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center">
-            <img
-              src={logo}
-              alt="Brand Logo"
-              className="h-20 w-auto object-contain"
-            />
-          </div>
-            <div className="text-2xl font-bold text-blue-600 dark:text-teal-400">
-              Finance & Tax Services
-            </div>
-            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-              Trusted professionals for ITR, GST, advisory, and compliance with enterprise-grade standards.
+      {/* Professional Footer */}
+      <footer className="bg-slate-50 dark:bg-[#020617] border-t border-slate-200 dark:border-white/5 pt-20 pb-10">
+        <div className="container mx-auto px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="space-y-6">
+            <img src={logo} alt="Brand" className="h-16 w-auto" />
+            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+              Premium financial services providing tax compliance, audit readiness, and strategic growth consulting for enterprises and individuals.
             </p>
-            <div className="flex items-center gap-4 pt-2">
-              <a href="https://www.linkedin.com" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform hover:scale-110">
-                <Linkedin size={20} />
-              </a>
-              <a href="https://twitter.com" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform hover:scale-110">
-                <Twitter size={20} />
-              </a>
-              <a href="https://facebook.com" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform hover:scale-110">
-                <Facebook size={20} />
-              </a>
-              <a href="https://instagram.com" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform hover:scale-110">
-                <Instagram size={20} />
-              </a>
+            <div className="flex gap-3">
+              <SocialBtn Icon={Linkedin} />
+              <SocialBtn Icon={Twitter} />
+              <SocialBtn Icon={Instagram} />
             </div>
           </div>
 
-          {/* Services */}
-          <div>
-            <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">Services</div>
-            <ul className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
-              <li><a href="/services/itr-filing" className="hover:text-blue-600 dark:hover:text-teal-400 transition">ITR Filing</a></li>
-              <li><a href="/services/gst-registration" className="hover:text-blue-600 dark:hover:text-teal-400 transition">GST Registration</a></li>
-              <li><a href="/services/gst-returns" className="hover:text-blue-600 dark:hover:text-teal-400 transition">GST Returns</a></li>
-              <li><a href="/services/accounting-compliance" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Accounting & Compliance</a></li>
-              <li><a href="/services/tax-planning" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Tax Planning & Advisory</a></li>
-              <li><a href="/services/business-consulting" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Business & Financial Consulting</a></li>
+          <FooterLinkGroup title="Services" links={['ITR Filing', 'GST Returns', 'Tax Planning', 'Business Consulting']} />
+          <FooterLinkGroup title="Company" links={['About Us', 'Our Gallery', 'Latest News', 'Contact Support']} />
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-black uppercase tracking-widest dark:text-white">Office</h4>
+            <ul className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+              <li className="flex items-center gap-2"><MapPin size={16} /> Kolkata, West Bengal</li>
+              <li className="flex items-center gap-2"><Phone size={16} /> +91 90000 00000</li>
+              <li className="flex items-center gap-2"><Mail size={16} /> support@finfirm.in</li>
             </ul>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">Quick Links</div>
-            <ul className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
-              <li><a href="/" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Home</a></li>
-              <li><a href="/about" className="hover:text-blue-600 dark:hover:text-teal-400 transition">About Us</a></li>
-              <li><a href="/gallery" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Gallery</a></li>
-              <li><a href="/news" className="hover:text-blue-600 dark:hover:text-teal-400 transition">News / Vlog</a></li>
-              <li><a href="/contact" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Contact</a></li>
-              <li><a href="/login" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Login</a></li>
-            </ul>
-          </div>
-
-          {/* Legal & Contact */}
-          <div>
-            <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">Legal & Contact</div>
-            <ul className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Kolkata, West Bengal, India</li>
-              <li>+91-90000 00000</li>
-              <li>support@finfirm.in</li>
-              <li>Mon–Sat: 10:00–19:00 IST</li>
-              <li>
-                <a href="#" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Terms</a> •{" "}
-                <a href="#" className="hover:text-blue-600 dark:hover:text-teal-400 transition">Privacy</a>
-              </li>
-            </ul>
-          </div>
-
         </div>
 
-        <div className="text-center text-gray-500 dark:text-gray-400 text-sm pt-10 mt-10 border-t border-gray-200 dark:border-slate-700">
-          © {new Date().getFullYear()} Finance & Tax Services
+        <div className="container mx-auto px-8 mt-20 pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+          <p>© {new Date().getFullYear()} Finance & Tax Services</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a>
+          </div>
         </div>
       </footer>
 
-      {(() => {
-        const whatsappNumber = '919000000000'
-        const message = encodeURIComponent('Hello, I want to know about services and pricing in detail.')
-        const href = `https://wa.me/${whatsappNumber}?text=${message}`
-        return (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Chat with us on WhatsApp"
-            className="fixed z-50 md:bottom-6 md:right-6 bottom-5 right-5 w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/60"
-          >
-            <div className="w-8 h-8 flex items-center justify-center drop-shadow-[0_0_1.2px_rgba(255,255,255,1)]">
-              <img src="/src/assets/images/images-removebg-preview.png" alt="WhatsApp" className="w-full h-full object-contain" />
-            </div>
-          </a>
-        )
-      })()}
+      {/* Floating WhatsApp */}
+      <a 
+        href="https://wa.me/919000000000" 
+        target="_blank" 
+        className="fixed bottom-8 right-8 z-[90] w-14 h-14 bg-white dark:bg-slate-800 rounded-full shadow-2xl flex items-center justify-center hover:-translate-y-2 transition-all duration-300 border border-slate-100 dark:border-white/10"
+      >
+        <img src="/src/assets/images/images-removebg-preview.png" alt="WhatsApp" className="w-8 h-8 object-contain" />
+      </a>
     </div>
-  )
+  );
+}
+
+function SocialBtn({ Icon }) {
+  return (
+    <a href="#" className="w-10 h-10 rounded-full bg-slate-200/50 dark:bg-white/5 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-blue-600 hover:text-white dark:hover:bg-amber-500 dark:hover:text-black transition-all">
+      <Icon size={18} />
+    </a>
+  );
+}
+
+function FooterLinkGroup({ title, links }) {
+  return (
+    <div className="space-y-4">
+      <h4 className="text-sm font-black uppercase tracking-widest dark:text-white">{title}</h4>
+      <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
+        {links.map(link => (
+          <li key={link}><a href="#" className="hover:text-blue-600 dark:hover:text-amber-500 transition-colors">{link}</a></li>
+        ))}
+      </ul>
+    </div>
+  );
 }

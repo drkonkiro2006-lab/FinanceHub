@@ -19,7 +19,7 @@ export default function MobileTopBar({ onMenu, onInfo }) {
     <div 
       className={`lg:hidden fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b pt-safe-top
         ${scrolled 
-          ? 'bg-white/75 dark:bg-slate-900/75 backdrop-blur-xl backdrop-saturate-150 border-slate-200/50 dark:border-slate-800/50 shadow-sm' 
+          ? 'bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl backdrop-saturate-150 border-slate-200/50 dark:border-slate-800/50 shadow-sm' 
           : 'bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border-transparent'
         }`}
     >
