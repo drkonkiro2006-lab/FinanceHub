@@ -5,7 +5,7 @@ import { ShieldCheck, BadgeCheck, Lock, Award, ArrowUpRight, CheckCircle2, Star,
 
 export default function Hero() {
   return (
-    <section className="relative w-full max-w-full min-h-screen flex items-center overflow-hidden bg-slate-50 dark:bg-[#020617] transition-colors duration-500">
+    <section className="relative w-full min-h-screen flex items-start justify-center overflow-hidden bg-slate-50 dark:bg-[#020617] transition-colors duration-500 pt-12 md:pt-40 lg:pt-2 pb-20">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-[120px]" />
@@ -23,7 +23,7 @@ export default function Hero() {
         
         {/* Left Column: Content */}
         <motion.div 
-          className="max-w-md mx-auto text-center lg:max-w-none lg:mx-0 lg:text-left"
+          className="pt-8 max-w-md mx-auto text-center lg:max-w-none lg:mx-0 lg:text-left"
           initial={{ opacity: 0, x: -30 }} 
           animate={{ opacity: 1, x: 0 }} 
           transition={{ duration: 0.8, ease: "easeOut" }}
