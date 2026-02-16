@@ -16,24 +16,39 @@ export default function Blogs() {
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-2xl font-semibold text-ink">Latest Insights</h2>
         <p className="text-ink-soft mt-2">Finance updates and guidance from our team.</p>
-        <div className="mt-6 grid md:grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogs.map(b => (
-            <motion.div key={b.id} className="card card-interactive overflow-hidden">
-              <div className="relative h-40">
-                <motion.img
+            <motion.div
+              key={b.id}
+              className="card-glass card-glass-interactive flex flex-col h-full group"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="relative h-48 overflow-hidden">
+                <img
                   src={b.image}
                   alt={b.title}
-                  className="absolute inset-0 w-full h-full object-cover object-center"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.3 }}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <span className="absolute top-3 left-3 text-xs px-2 py-1 card-chip">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute top-3 left-3 text-xs font-medium px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-slate-800 shadow-sm border border-white/50">
                   {b.tag} {'\u2022'} {b.time}
                 </span>
               </div>
-              <div className="p-4">
-                <div className="font-semibold text-ink">{b.title}</div>
-                <Link to={`/news/${b.id}`} className="text-brand text-sm mt-2 inline-block">Read {'\u2192'}</Link>
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-lg font-bold text-ink mb-3 group-hover:text-brand transition-colors line-clamp-2">
+                  {b.title}
+                </h3>
+                <div className="mt-auto pt-2">
+                  <Link to={`/news/${b.id}`} className="text-brand font-semibold text-sm inline-flex items-center group/link">
+                    Read Article
+                    <span className="ml-1 transition-transform duration-300 group-hover/link:translate-x-1">
+                      {'\u2192'}
+                    </span>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           ))}
