@@ -5,7 +5,7 @@ import MobileMenu from './MobileMenu.jsx';
 import MobileInfoPanel from './MobileInfoPanel.jsx';
 import { Linkedin, Twitter, Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import logo from "../../../src/assets/images/mybrand.png";
-
+import Wblogo from "../../../src/assets/images/images-removebg-preview.png";
 export default function Layout({ children }) {
   const [stuck, setStuck] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -74,11 +74,11 @@ export default function Layout({ children }) {
 
       {/* Floating WhatsApp */}
       <a 
-        href="https://wa.me/919000000000" 
+        href="https://wa.me/918918593565" 
         target="_blank" 
-        className="fixed bottom-8 right-8 z-[90] w-14 h-14 bg-white dark:bg-slate-800 rounded-full shadow-2xl flex items-center justify-center hover:-translate-y-2 transition-all duration-300 border border-slate-100 dark:border-white/10"
+        className="fixed bottom-8 right-8 z-[90] w-14 h-14 bg-transparent dark:bg-slate-800 rounded-full shadow-2xl flex items-center justify-center hover:-translate-y-2 transition-all duration-300 border border-slate-100 dark:border-white/10"
       >
-        <img src="/src/assets/images/images-removebg-preview.png" alt="WhatsApp" className="w-8 h-8 object-contain" />
+        <img src={Wblogo}/>
       </a>
     </div>
   );
