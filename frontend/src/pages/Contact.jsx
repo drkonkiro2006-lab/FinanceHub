@@ -309,6 +309,17 @@ export default function Contact() {
                   Ready to scale <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 animate-gradient-x">together?</span>
                 </motion.h1>
+
+                {/* ADDED ADMIN BUTTON HERE */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => window.location.href = '/adminupload'}
+                  className="mt-6 px-6 py-2 rounded-full border border-slate-200 dark:border-slate-800 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  Admin Login
+                </motion.button>
+
                 <p className="text-slate-500 dark:text-slate-400 mt-8 text-xl leading-relaxed font-medium">
                   Experience seamless financial consulting. Reach out today and let’s simplify your growth journey.
                 </p>

@@ -14,6 +14,7 @@ import Signup from './pages/Signup.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import NotFound from './pages/NotFound.jsx'
 import ProtectedRoute from './components/layout/ProtectedRoute.jsx'
+import AdminLogin from './components/home/AdminUpload.jsx'
 
 export default function App() {
   return (
@@ -37,6 +38,15 @@ export default function App() {
                 <Dashboard />
               </ProtectedRoute>
             }
+          />
+          <Route path="/adminupload" element={<AdminLogin />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
