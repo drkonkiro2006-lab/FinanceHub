@@ -42,7 +42,7 @@ export default function Blogs() {
                   {b.title}
                 </h3>
                 <div className="mt-auto pt-2">
-                  <Link to={`/news/${b.id}`} className="text-brand font-semibold text-sm inline-flex items-center group/link">
+                  <Link to={`/insights/${b.id}`} className="text-brand font-semibold text-sm inline-flex items-center group/link">
                     Read Article
                     <span className="ml-1 transition-transform duration-300 group-hover/link:translate-x-1">
                       {'\u2192'}

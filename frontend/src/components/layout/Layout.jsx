@@ -51,7 +51,7 @@ export default function Layout({ children }) {
           </div>
 
           <FooterLinkGroup title="Services" links={['ITR Filing', 'GST Returns', 'Tax Planning', 'Business Consulting']} />
-          <FooterLinkGroup title="Company" links={['About Us', 'Our Gallery', 'Latest News', 'Contact Support']} />
+          <FooterLinkGroup title="Company" links={['About Us', 'Our Gallery', 'Insights', 'Contact Support']} />
 
           <div className="space-y-4">
             <h4 className="text-sm font-black uppercase tracking-widest dark:text-white">Office</h4>
@@ -73,9 +73,9 @@ export default function Layout({ children }) {
       </footer>
 
       {/* Floating WhatsApp */}
-      <a 
-        href="https://wa.me/919000000000" 
-        target="_blank" 
+      <a
+        href="https://wa.me/919000000000"
+        target="_blank"
         className="fixed bottom-8 right-8 z-[90] w-14 h-14 bg-white dark:bg-slate-800 rounded-full shadow-2xl flex items-center justify-center hover:-translate-y-2 transition-all duration-300 border border-slate-100 dark:border-white/10"
       >
         <img src="/src/assets/images/images-removebg-preview.png" alt="WhatsApp" className="w-8 h-8 object-contain" />

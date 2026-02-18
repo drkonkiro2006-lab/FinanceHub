@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="mt-10 bg-slate-900 text-white">
       <div className="container py-14 grid gap-12 md:grid-cols-4 items-start">
-        
+
         {/* Left Big Logo Section */}
         <div className="flex flex-col items-start">
           <img
@@ -54,7 +54,7 @@ export default function Footer() {
             <li><a href="/" className="hover:text-white transition">Home</a></li>
             <li><a href="/about" className="hover:text-white transition">About Us</a></li>
             <li><a href="/gallery" className="hover:text-white transition">Gallery</a></li>
-            <li><a href="/news" className="hover:text-white transition">News / Vlog</a></li>
+            <li><a href="/insights" className="hover:text-white transition">Insights</a></li>
             <li><a href="/contact" className="hover:text-white transition">Contact</a></li>
             <li><a href="/login" className="hover:text-white transition">Login</a></li>
           </ul>

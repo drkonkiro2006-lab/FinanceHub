@@ -6,8 +6,9 @@ import About from './pages/About.jsx'
 import Services from './pages/Services.jsx'
 import ServiceDetail from './pages/ServiceDetail.jsx'
 import Gallery from './pages/Gallery.jsx'
-import News from './pages/News.jsx'
-import NewsDetail from './pages/NewsDetail.jsx'
+import Insights from './pages/Insights.jsx'
+
+import InsightDetail from './pages/InsightDetail.jsx'
 import Contact from './pages/Contact.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
@@ -25,8 +26,9 @@ export default function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/news/:id" element={<NewsDetail />} />
+          <Route path="/insights" element={<Insights />} />
+
+          <Route path="/insights/:id" element={<InsightDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

@@ -28,7 +28,7 @@ export default function MainNav() {
 
   return (
     <>
-      <nav 
+      <nav
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 
         ${scrolled ? 'bg-transparent h-20' : 'bg-transparent h-20'} 
         hidden lg:flex items-center justify-between pt-16 px-10`}
@@ -53,8 +53,8 @@ export default function MainNav() {
             onMouseLeave={() => setOpen(false)}
           >
             <button className={`flex items-center gap-1.5 px-6 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all uppercase
-              ${open 
-                ? 'bg-blue-600 dark:bg-amber-500 text-white dark:text-black' 
+              ${open
+                ? 'bg-blue-600 dark:bg-amber-500 text-white dark:text-black'
                 : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-amber-500'}`}>
               Services
               <ChevronDown size={14} className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
@@ -104,7 +104,8 @@ export default function MainNav() {
 
           <NavButton to="/about" label="About" />
           <NavButton to="/gallery" label="Gallery" />
-          <NavButton to="/news" label="Insights" />
+          <NavButton to="/insights" label="Insights" />
+
           <NavButton to="/contact" label="Contact" />
         </div>
 
@@ -139,8 +140,8 @@ function NavButton({ to, label }) {
       to={to}
       className={({ isActive }) => `
         px-6 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all uppercase
-        ${isActive 
-          ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-amber-400 shadow-sm' 
+        ${isActive
+          ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-amber-400 shadow-sm'
           : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
         }
       `}
